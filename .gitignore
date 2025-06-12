@@ -22,7 +22,7 @@ Thumbs.db
 .env.*
 
 # Electron/Stream Deck plugin artifacts
-*.sdPlugin/
+# *.sdPlugin/
 *.streamDeckPlugin/
 *.streamDeckPlugin.zip
 
