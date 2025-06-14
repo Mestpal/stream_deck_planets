@@ -7,7 +7,7 @@
       "Name": "Earth Info",
       "UUID": "com.manuel-estvez-palencia.streamdeck-planets.earth",
       "Icon": "imgs/actions/counter/icon",
-      "Tooltip": "Displays Earth icon and information about our planet on each click",
+      "Tooltip": "Displays Earth information on each click",
       "PropertyInspectorPath": "ui/earth-get-info.html",
       "Controllers": [
         "Keypad"

@@ -1,47 +1,55 @@
-import { action, KeyDownEvent, SingletonAction, WillAppearEvent } from "@elgato/streamdeck";
+import streamDeck, { action, KeyAction, KeyDownEvent, SingletonAction } from "@elgato/streamdeck";
 
-/**
- * An example action class that displays a count that increments by one each time the button is pressed.
- */
+
 @action({ UUID: "com.manuel-estvez-palencia.streamdeck-planets.earth" })
-export class GetEarthInfo extends SingletonAction<CounterSettings> {
-	/**
-	 * The {@link SingletonAction.onWillAppear} event is useful for setting the visual representation of an action when it becomes visible. This could be due to the Stream Deck first
-	 * starting up, or the user navigating between pages / folders etc.. There is also an inverse of this event in the form of {@link streamDeck.client.onWillDisappear}. In this example,
-	 * we're setting the title to the "count" that is incremented in {@link GetEarthInfo.onKeyDown}.
-	 */
-	override onWillAppear(ev: WillAppearEvent<CounterSettings>): void | Promise<void> {
-		return ev.action.setTitle(`${ev.payload.settings.count ?? 0}`);
-	}
+export class GetEarthInfo extends SingletonAction<EarthSettings> {
 
-	/**
-	 * Listens for the {@link SingletonAction.onKeyDown} event which is emitted by Stream Deck when an action is pressed. Stream Deck provides various events for tracking interaction
-	 * with devices including key down/up, dial rotations, and device connectivity, etc. When triggered, {@link ev} object contains information about the event including any payloads
-	 * and action information where applicable. In this example, our action will display a counter that increments by one each press. We track the current count on the action's persisted
-	 * settings using `setSettings` and `getSettings`.
-	 */
-	override async onKeyDown(ev: KeyDownEvent<CounterSettings>): Promise<void> {
-		// Update the count from the settings.
-		const { settings } = ev.payload;
-		console.log("Current settings EARTH:", settings.count, settings.count === 0);
+  override async onKeyDown(ev: KeyDownEvent<EarthSettings>): Promise<void> {
+    const { settings } = ev.payload;
+    if (typeof settings.count !== "number") {
+      settings.count = 0;
+    }
 
-		if (!settings?.count || settings.count === 0) {
-		settings.incrementBy = 1;
-		} else {
-		settings.incrementBy = 2;
-		}
-		settings.count = (settings.count ?? 0) + settings.incrementBy;
+    this.getEarthData(ev.action, settings);
 
-		// Update the current count in the action's settings, and change the title.
-		await ev.action.setSettings(settings);
-		await ev.action.setTitle(`${settings.count}`);
-	}
+    if (settings.count < 3) {
+      settings.count += 1;
+    } else {
+      settings.count = 0;
+    }
+
+    await ev.action.setSettings(settings);
+  }
+
+  private async getEarthData(action: KeyAction, settings: EarthSettings) {
+    try {      
+      if (!settings.data?.englishName) {
+        const response = await fetch('https://api.le-systeme-solaire.net/rest.php/bodies/earth');
+        settings.data = await response.json();
+        await action.setSettings(settings);
+      }
+
+      switch (settings.count) {
+        case 1:
+          action.setTitle(`Gravity: ${settings.data.gravity} m/s²`);
+          break;
+        case 2:
+          action.setTitle(`Escape speed: ${settings.data.escape} m/s`);
+          break;
+        case 3:
+          action.setTitle(`Type: ${settings.data.bodyType}`);
+          break;
+        default:
+          action.setTitle(`${settings.data.englishName}`);
+      }
+      
+    } catch (e) {
+      streamDeck.logger.error('Failed to fetch Earth info', e);
+    }
+  }
 }
 
-/**
- * Settings for {@link GetEarthInfo}.
- */
-type CounterSettings = {
-	count?: number;
-	incrementBy?: number;
-};
+type EarthSettings = {
+  count?: number;
+  data?: any
+}
