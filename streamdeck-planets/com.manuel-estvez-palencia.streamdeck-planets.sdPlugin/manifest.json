@@ -8,7 +8,7 @@
       "UUID": "com.manuel-estvez-palencia.streamdeck-planets.earth",
       "Icon": "imgs/actions/counter/icon",
       "Tooltip": "Displays Earth information on each click",
-      "PropertyInspectorPath": "ui/earth-get-info.html",
+      "PropertyInspectorPath": "ui/earth-info.html",
       "Controllers": [
         "Keypad"
       ],
@@ -20,18 +20,34 @@
       ]
     },
     {
-      "Name": "Counter",
-      "UUID": "com.manuel-estvez-palencia.streamdeck-planets.increment",
+      "Name": "Mars Info",
+      "UUID": "com.manuel-estvez-palencia.streamdeck-planets.mars",
       "Icon": "imgs/actions/counter/icon",
-      "Tooltip": "Displays a count, which increments by one on press.",
-      "PropertyInspectorPath": "ui/increment-counter.html",
+      "Tooltip": "Displays Mars information on each click",
+      "PropertyInspectorPath": "ui/mars-info.html",
       "Controllers": [
         "Keypad"
       ],
       "States": [
         {
-          "Image": "imgs/actions/counter/key",
-          "TitleAlignment": "middle"
+          "Image": "imgs/actions/planets/Tierra1",
+          "TitleAlignment": "top"
+        }
+      ]
+    },
+    {
+      "Name": "Mercury Info",
+      "UUID": "com.manuel-estvez-palencia.streamdeck-planets.mercury",
+      "Icon": "imgs/actions/counter/icon",
+      "Tooltip": "Displays Mercury information on each click",
+      "PropertyInspectorPath": "ui/mercury-info.html",
+      "Controllers": [
+        "Keypad"
+      ],
+      "States": [
+        {
+          "Image": "imgs/actions/planets/Tierra1",
+          "TitleAlignment": "top"
         }
       ]
     }
