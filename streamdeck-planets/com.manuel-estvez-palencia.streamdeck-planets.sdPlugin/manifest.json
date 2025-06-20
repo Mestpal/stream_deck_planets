@@ -7,7 +7,7 @@
       "Name": "Earth Info",
       "UUID": "com.manuel-estvez-palencia.streamdeck-planets.earth",
       "Icon": "imgs/actions/counter/icon",
-      "Tooltip": "Displays Earth information on each click",
+      "Tooltip": "Displays Earth information",
       "PropertyInspectorPath": "ui/earth-info.html",
       "Controllers": [
         "Keypad"
@@ -23,7 +23,7 @@
       "Name": "Mars Info",
       "UUID": "com.manuel-estvez-palencia.streamdeck-planets.mars",
       "Icon": "imgs/actions/counter/icon",
-      "Tooltip": "Displays Mars information on each click",
+      "Tooltip": "Displays Mars information",
       "PropertyInspectorPath": "ui/mars-info.html",
       "Controllers": [
         "Keypad"
@@ -39,7 +39,7 @@
       "Name": "Mercury Info",
       "UUID": "com.manuel-estvez-palencia.streamdeck-planets.mercury",
       "Icon": "imgs/actions/counter/icon",
-      "Tooltip": "Displays Mercury information on each click",
+      "Tooltip": "Displays Mercury information",
       "PropertyInspectorPath": "ui/mercury-info.html",
       "Controllers": [
         "Keypad"
@@ -47,6 +47,86 @@
       "States": [
         {
           "Image": "imgs/actions/planets/Mercurio1",
+          "TitleAlignment": "top"
+        }
+      ]
+    },
+    {
+      "Name": "Venus Info",
+      "UUID": "com.manuel-estvez-palencia.streamdeck-planets.venus",
+      "Icon": "imgs/actions/counter/icon",
+      "Tooltip": "Displays Venus information",
+      "PropertyInspectorPath": "ui/venus-info.html",
+      "Controllers": [
+        "Keypad"
+      ],
+      "States": [
+        {
+          "Image": "imgs/actions/planets/Venus1",
+          "TitleAlignment": "top"
+        }
+      ]
+    },
+    {
+      "Name": "Jupiter Info",
+      "UUID": "com.manuel-estvez-palencia.streamdeck-planets.jupiter",
+      "Icon": "imgs/actions/counter/icon",
+      "Tooltip": "Displays Jupiter information",
+      "PropertyInspectorPath": "ui/jupiter-info.html",
+      "Controllers": [
+        "Keypad"
+      ],
+      "States": [
+        {
+          "Image": "imgs/actions/planets/Jupiter1",
+          "TitleAlignment": "top"
+        }
+      ]
+    },
+    {
+      "Name": "Uranus Info",
+      "UUID": "com.manuel-estvez-palencia.streamdeck-planets.uranus",
+      "Icon": "imgs/actions/counter/icon",
+      "Tooltip": "Displays Uranus information",
+      "PropertyInspectorPath": "ui/uranus-info.html",
+      "Controllers": [
+        "Keypad"
+      ],
+      "States": [
+        {
+          "Image": "imgs/actions/planets/Urano1",
+          "TitleAlignment": "top"
+        }
+      ]
+    },
+    {
+      "Name": "Neptune Info",
+      "UUID": "com.manuel-estvez-palencia.streamdeck-planets.neptune",
+      "Icon": "imgs/actions/counter/icon",
+      "Tooltip": "Displays Uranus information",
+      "PropertyInspectorPath": "ui/uranus-info.html",
+      "Controllers": [
+        "Keypad"
+      ],
+      "States": [
+        {
+          "Image": "imgs/actions/planets/Neptuno1",
+          "TitleAlignment": "top"
+        }
+      ]
+    },
+    {
+      "Name": "Saturn Info",
+      "UUID": "com.manuel-estvez-palencia.streamdeck-planets.saturn",
+      "Icon": "imgs/actions/counter/icon",
+      "Tooltip": "Displays Saturn information",
+      "PropertyInspectorPath": "ui/saturn-info.html",
+      "Controllers": [
+        "Keypad"
+      ],
+      "States": [
+        {
+          "Image": "imgs/actions/planets/Saturno1",
           "TitleAlignment": "top"
         }
       ]

@@ -1,13 +1,13 @@
 import { action, KeyDownEvent, SingletonAction, WillAppearEvent } from "@elgato/streamdeck";
-import {getSolarSystemObject, pressButtonCountManagement} from "../utils/solar-system-utils"
+import {getSolarSystemObject} from "../utils/solar-system-utils"
 @action({ UUID: "com.manuel-estvez-palencia.streamdeck-planets.mars" })
-export class MarsInfo extends SingletonAction<EarthSettings> {
+export class MarsInfo extends SingletonAction<MarsSettings> {
 
-  override onWillAppear(ev: WillAppearEvent<EarthSettings>): Promise<void> {
+  override onWillAppear(ev: WillAppearEvent<MarsSettings>): Promise<void> {
     return ev.action.setTitle('Mars');
   }
 
-  override async onKeyDown(ev: KeyDownEvent<EarthSettings>): Promise<void> {
+  override async onKeyDown(ev: KeyDownEvent<MarsSettings>): Promise<void> {
     const { settings } = ev.payload;
     settings.name = 'Mars'
 
@@ -15,7 +15,7 @@ export class MarsInfo extends SingletonAction<EarthSettings> {
   }
 }
 
-type EarthSettings = {
+type MarsSettings = {
   count?: number;
   data?: any;
   name?: string
