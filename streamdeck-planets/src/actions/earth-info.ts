@@ -1,7 +1,7 @@
 import { action, KeyDownEvent, SingletonAction, WillAppearEvent } from "@elgato/streamdeck";
-import getSolarSystemObject from "../utils/solar-system-utils"
+import {getSolarSystemObject} from "../utils/solar-system-utils"
 @action({ UUID: "com.manuel-estvez-palencia.streamdeck-planets.earth" })
-export class GetEarthInfo extends SingletonAction<EarthSettings> {
+export class EarthInfo extends SingletonAction<EarthSettings> {
 
   override onWillAppear(ev: WillAppearEvent<EarthSettings>): Promise<void> {
     return ev.action.setTitle('Earth');
@@ -11,19 +11,7 @@ export class GetEarthInfo extends SingletonAction<EarthSettings> {
     const { settings } = ev.payload;
     settings.name = 'Earth'
 
-    if (typeof settings.count !== "number") {
-      settings.count = 0;
-    }
-
-    getSolarSystemObject(settings.name, ev.action, settings);
-
-    if (settings.count < 3) {
-      settings.count += 1;
-    } else {
-      settings.count = 0;
-    }
-
-    await ev.action.setSettings(settings);
+    await getSolarSystemObject(settings.name, ev.action, settings);
   }
 }
 
