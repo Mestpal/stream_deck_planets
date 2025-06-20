@@ -30,7 +30,7 @@
       ],
       "States": [
         {
-          "Image": "imgs/actions/planets/Tierra1",
+          "Image": "imgs/actions/planets/Marte1",
           "TitleAlignment": "top"
         }
       ]
@@ -46,7 +46,7 @@
       ],
       "States": [
         {
-          "Image": "imgs/actions/planets/Tierra1",
+          "Image": "imgs/actions/planets/Mercurio1",
           "TitleAlignment": "top"
         }
       ]

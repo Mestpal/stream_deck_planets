@@ -1,5 +1,5 @@
 import { action, KeyDownEvent, SingletonAction, WillAppearEvent } from "@elgato/streamdeck";
-import getSolarSystemObject from "../utils/solar-system-utils"
+import {getSolarSystemObject, pressButtonCountManagement} from "../utils/solar-system-utils"
 @action({ UUID: "com.manuel-estvez-palencia.streamdeck-planets.mercury" })
 export class MercuryInfo extends SingletonAction<EarthSettings> {
 
@@ -11,19 +11,7 @@ export class MercuryInfo extends SingletonAction<EarthSettings> {
     const { settings } = ev.payload;
     settings.name = 'Mercury'
 
-    if (typeof settings.count !== "number") {
-      settings.count = 0;
-    }
-
-    getSolarSystemObject(settings.name, ev.action, settings);
-
-    if (settings.count < 3) {
-      settings.count += 1;
-    } else {
-      settings.count = 0;
-    }
-
-    await ev.action.setSettings(settings);
+    await getSolarSystemObject(settings.name, ev.action, settings);
   }
 }
 
