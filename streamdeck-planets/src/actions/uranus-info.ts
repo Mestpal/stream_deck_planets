@@ -1,5 +1,4 @@
 import { action, KeyDownEvent, SingletonAction, WillAppearEvent } from "@elgato/streamdeck";
-
 import { getSolarSystemObject } from "../utils/solar-system-utils";
 import type { SolarObjectSettings } from "../utils/solar-system-utils";
 
