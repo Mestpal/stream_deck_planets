@@ -23,7 +23,7 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 
 	/**
 	 * Set the default settings of the solar system object, 
-		* at the moment only the name in English
+	 * at the moment only the name in English
 	 * @param ev The event payload for the will appear event.
 	 * @param name The name of the solar system object
 	 * @returns A promise that resolves when the title is set.

@@ -18,11 +18,10 @@ export class VenusInfo extends ObjectInfo {
 	}
 
 	/**
-	 * Handles the will appear event for the Venus action.
 	 * Sets the name to "Venus" as default
 	 * @param ev The event payload for the will appear event.
 	 */
-	public override onWillAppear(ev: WillAppearEvent<SolarObjectSettings>){
+	public override onWillAppear(ev: WillAppearEvent<SolarObjectSettings>): void {
 		this.setDefaultSettings(ev, "Venus");
 	}
 }

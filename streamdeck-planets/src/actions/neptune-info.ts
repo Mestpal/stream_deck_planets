@@ -18,11 +18,10 @@ export class NeptuneInfo extends ObjectInfo {
 	}
 
 	/**
-	 * Handles the will appear event for the Neptune action.
 	 * Sets the name to "Neptune" as default
 	 * @param ev The event payload for the will appear event.
 	 */
-	public override onWillAppear(ev: WillAppearEvent<SolarObjectSettings>){
+	public override onWillAppear(ev: WillAppearEvent<SolarObjectSettings>): void {
 		this.setDefaultSettings(ev, "Neptune");
 	}
 }

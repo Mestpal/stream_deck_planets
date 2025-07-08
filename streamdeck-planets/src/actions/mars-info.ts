@@ -18,11 +18,10 @@ export class MarsInfo extends ObjectInfo {
 	}
 
 	/**
-	 * Handles the will appear event for the Mars action.
 	 * Sets the name to "Mars" as default
 	 * @param ev The event payload for the will appear event.
 	 */
-	public override onWillAppear(ev: WillAppearEvent<SolarObjectSettings>){
+	public override onWillAppear(ev: WillAppearEvent<SolarObjectSettings>): void {
 		this.setDefaultSettings(ev, "Mars");
 	}
 }

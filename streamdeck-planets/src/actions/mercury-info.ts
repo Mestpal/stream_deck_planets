@@ -19,10 +19,9 @@ export class MercuryInfo extends ObjectInfo {
 
 	/**
 	 * Handles the will appear event for the Mercury action.
-	 * Sets the name to "Mercury" as default
 	 * @param ev The event payload for the will appear event.
 	 */
-	public override onWillAppear(ev: WillAppearEvent<SolarObjectSettings>){
+	public override onWillAppear(ev: WillAppearEvent<SolarObjectSettings>): void {
 		this.setDefaultSettings(ev, "Mercury");
 	}
 }

@@ -18,11 +18,10 @@ export class UranusInfo extends ObjectInfo {
 	}
 
 	/**
-	 * Handles the will appear event for the Uranus action.
 	 * Sets the name to "Uranus" as default
 	 * @param ev The event payload for the will appear event.
 	 */
-	public override onWillAppear(ev: WillAppearEvent<SolarObjectSettings>){
+	public override onWillAppear(ev: WillAppearEvent<SolarObjectSettings>): void {
 		this.setDefaultSettings(ev, "Uranus");
 	}
 }
