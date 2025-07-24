@@ -1,4 +1,11 @@
-import { action, KeyDownEvent, SingletonAction, WillAppearEvent } from "@elgato/streamdeck";
+
+import streamDeck, { 
+	action,
+	KeyDownEvent,
+	SingletonAction,
+	WillAppearEvent 
+} from "@elgato/streamdeck";
+import settings from "../config/settings"
 
 import { getSolarSystemObject } from "../utils/solar-system-utils";
 import type { SolarObjectSettings } from "../utils/solar-system-utils";
@@ -15,10 +22,22 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	 * @param name The name of the solar object to search
 	 */
 	public async getInfoAction(ev: KeyDownEvent<SolarObjectSettings>, name: string): Promise<void> {
+		console.log('PAYLOAD: ', ev.payload);
+		
 		const { settings } = ev.payload;
 		settings.name = name;
 
 		await getSolarSystemObject(settings.name, ev.action, settings);
+	}
+	
+	/**
+	 * Listen for messages from the property inspector.
+	 */
+	public async sentChecklistSettings(): Promise<void> {
+		streamDeck.ui.current?.sendToPropertyInspector({
+			event: "getSettings",
+			items: settings,
+		});
 	}
 
 	/**

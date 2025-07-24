@@ -18,6 +18,14 @@ export class VenusInfo extends ObjectInfo {
 	}
 
 	/**
+	 * Handles the send to plugin event for the Venus action.
+	 * Sends the checklist settings.
+	 */
+	public override onSendToPlugin(): void {
+		this.sentChecklistSettings()
+	}
+
+	/**
 	 * Sets the name to "Venus" as default
 	 * @param ev The event payload for the will appear event.
 	 */

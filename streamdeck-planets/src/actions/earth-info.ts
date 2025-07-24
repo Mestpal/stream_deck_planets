@@ -1,4 +1,7 @@
-import { action, KeyDownEvent, WillAppearEvent } from "@elgato/streamdeck";
+import { action,
+	KeyDownEvent,
+	WillAppearEvent 
+} from "@elgato/streamdeck";
 import type { SolarObjectSettings } from "../utils/solar-system-utils";
 import { ObjectInfo } from "./object-info";
 
@@ -15,6 +18,14 @@ export class EarthInfo extends ObjectInfo {
 	 */
 	public override async onKeyDown(ev: KeyDownEvent<SolarObjectSettings>): Promise<void> {
 		await this.getInfoAction(ev, "Earth")
+	}
+
+	/**
+	 * Handles the send to plugin event for the Earth action.
+	 * Sends the checklist settings.
+	 */
+	public override onSendToPlugin(): void {
+		this.sentChecklistSettings()
 	}
 
 	/**

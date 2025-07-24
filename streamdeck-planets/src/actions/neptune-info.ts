@@ -18,6 +18,14 @@ export class NeptuneInfo extends ObjectInfo {
 	}
 
 	/**
+	 * Handles the send to plugin event for the Neptune action.
+	 * Sends the checklist settings.
+	 */
+	public override onSendToPlugin(): void {
+		this.sentChecklistSettings()
+	}
+
+	/**
 	 * Sets the name to "Neptune" as default
 	 * @param ev The event payload for the will appear event.
 	 */

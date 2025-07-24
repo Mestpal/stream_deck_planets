@@ -18,6 +18,14 @@ export class UranusInfo extends ObjectInfo {
 	}
 
 	/**
+	 * Handles the send to plugin event for the Uranus action.
+	 * Sends the checklist settings.
+	 */
+	public override onSendToPlugin(): void {
+		this.sentChecklistSettings()
+	}
+
+	/**
 	 * Sets the name to "Uranus" as default
 	 * @param ev The event payload for the will appear event.
 	 */

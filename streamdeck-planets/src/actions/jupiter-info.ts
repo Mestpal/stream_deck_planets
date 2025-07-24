@@ -18,6 +18,14 @@ export class JupiterInfo extends ObjectInfo {
 	}
 
 	/**
+	 * Handles the send to plugin event for the Jupiter action.
+	 * Sends the checklist settings.
+	 */
+	public override onSendToPlugin(): void {
+		this.sentChecklistSettings()
+	}
+
+	/**
 	 * Sets the name to "Jupiter" as default
 	 * @param ev The event payload for the will appear event.
 	 */

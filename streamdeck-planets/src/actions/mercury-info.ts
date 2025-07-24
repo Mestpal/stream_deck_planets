@@ -18,6 +18,14 @@ export class MercuryInfo extends ObjectInfo {
 	}
 
 	/**
+	 * Handles the send to plugin event for the Mercury action.
+	 * Sends the checklist settings.
+	 */
+	public override onSendToPlugin(): void {
+		this.sentChecklistSettings()
+	}
+
+	/**
 	 * Handles the will appear event for the Mercury action.
 	 * @param ev The event payload for the will appear event.
 	 */
