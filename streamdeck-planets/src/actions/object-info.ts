@@ -21,9 +21,7 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	 * @param ev The event payload for the key down event.
 	 * @param name The name of the solar object to search
 	 */
-	public async getInfoAction(ev: KeyDownEvent<SolarObjectSettings>, name: string): Promise<void> {
-		console.log('PAYLOAD: ', ev.payload);
-		
+	public async getInfoAction(ev: KeyDownEvent<SolarObjectSettings>, name: string): Promise<void> {		
 		const { settings } = ev.payload;
 		settings.name = name;
 

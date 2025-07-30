@@ -1,4 +1,6 @@
 import streamDeck, { KeyAction } from "@elgato/streamdeck";
+import settings from "../config/settings"
+
 
 /**
  * Displays a magnitude label on the Stream Deck key, then shows the value and unit after a short delay.
@@ -9,44 +11,34 @@ import streamDeck, { KeyAction } from "@elgato/streamdeck";
  */
 function showData(magnitude: string, value: number | string, unit: string, action: KeyAction): void {
 	action.setTitle(magnitude);
-	setTimeout(() => action.setTitle(`${value} ${unit}`), 1500);
+	setTimeout(() => action.setTitle(`${value} \n ${unit}`), 1500);
 }
 
 /**
  * Fetches and displays information about a Solar System object on the Stream Deck.
  * @param name - The name of the Solar System object.
  * @param action - The Stream Deck key action instance.
- * @param settings - The settings for the Solar System object.
+ * @param info - The settings for the Solar System object.
  * @returns A promise that resolves when the operation is complete.
  */
-async function getSolarSystemObject(name: string, action: KeyAction, settings: SolarObjectSettings): Promise<void> {
+async function getSolarSystemObject(name: string, action: KeyAction, info: SolarObjectSettings): Promise<void> {
 	try {
-		if (typeof settings.count !== "number") {
-			settings.count = 0;
+		if (typeof info.count !== "number") {
+			info.count = 0;
 		}
 
-		if (!settings.data?.englishName) {
+		if (!info.data?.englishName) {
 			const response = await fetch(`https://api.le-systeme-solaire.net/rest.php/bodies/${name}`);
-			settings.data = (await response.json()) as SolarSystemApiData;
-			await action.setSettings(settings);
+			info.data = (await response.json()) as SolarSystemApiData;
+			await action.setSettings(info);
 		}
 
-		switch (settings.count) {
-			case 1:
-				showData("Gravity", settings.data.gravity, "m/s²", action);
-				break;
-			case 2:
-				showData("Escape\n speed", settings.data.escape, "m/s", action);
-				break;
-			case 3:
-				showData("Type", settings.data.bodyType, "", action);
-				break;
-			default:
-				action.setTitle(settings.data.englishName || settings.name);
-		}
+		const apiValue = settings[info.count].value as keyof SolarSystemApiData;
+		const apiUnit = settings[info.count].unit || ''
+		showData(settings[info.count].label, info.data[apiValue], apiUnit, action)
 
-		settings.count = pressButtonCountManagement(settings.count);
-		await action.setSettings(settings);
+		info.count = pressButtonCountManagement(info.count);
+		await action.setSettings(info);
 	} catch (e) {
 		streamDeck.logger.error("Failed to fetch Solar System object info", e);
 	}
@@ -58,7 +50,7 @@ async function getSolarSystemObject(name: string, action: KeyAction, settings: S
  * @returns The updated count value.
  */
 function pressButtonCountManagement(counter: number): number {
-	if (counter < 3) {
+	if (counter < settings.length - 1) {
 		return counter + 1;
 	} else {
 		return 0;
