@@ -5,7 +5,7 @@ import streamDeck, {
 	SingletonAction,
 	WillAppearEvent 
 } from "@elgato/streamdeck";
-import settings from "../config/settings"
+import config from "../config/settings"
 
 import { getSolarSystemObject } from "../utils/solar-system-utils";
 import type { SolarObjectSettings } from "../utils/solar-system-utils";
@@ -25,7 +25,11 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 		const { settings } = ev.payload;
 		settings.name = name;
 
-		await getSolarSystemObject(settings.name, ev.action, settings);
+		await getSolarSystemObject(
+			settings.name,
+			ev.action, 
+			settings
+		);
 	}
 	
 	/**
@@ -34,7 +38,7 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	public async sentChecklistSettings(): Promise<void> {
 		streamDeck.ui.current?.sendToPropertyInspector({
 			event: "getSettings",
-			items: settings,
+			items: config.settings,
 		});
 	}
 
