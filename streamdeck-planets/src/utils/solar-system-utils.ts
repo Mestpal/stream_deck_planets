@@ -13,7 +13,7 @@ const defaultSetting = config.getDefaultSettings()[0];
  */
 function showData(magnitude: string, value: number | string, unit: string, action: KeyAction): void {
 	action.setTitle(magnitude);
-	setTimeout(() => action.setTitle(`${value} \n ${unit}`), 1500);
+	setTimeout(() => action.setTitle(`${value} \n ${unit}`), 1000);
 }
 
 /**
@@ -67,7 +67,7 @@ async function getSolarSystemObject(name: string, action: KeyAction, settings: S
 function pressButtonCountManagement(settings: SolarObjectSettings): number {
 	let count = 0
 
-	if (settings.objectSettings && settings.count < settings.objectSettings.length - 1) {
+	if (settings.objectSettings && settings.count < settings.objectSettings.length) {		
 		count =  settings.count + 1;
 	} 
 	
