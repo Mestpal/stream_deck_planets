@@ -1,4 +1,5 @@
 import { action, KeyDownEvent, WillAppearEvent } from "@elgato/streamdeck";
+
 import type { SolarObjectSettings } from "../utils/solar-system-utils";
 import { ObjectInfo } from "./object-info";
 
@@ -14,7 +15,7 @@ export class MercuryInfo extends ObjectInfo {
 	 * @param ev The event payload for the key down event.
 	 */
 	public override async onKeyDown(ev: KeyDownEvent<SolarObjectSettings>): Promise<void> {
-		await this.getInfoAction(ev, "Mercury")
+		await this.getInfoAction(ev, "Mercury");
 	}
 
 	/**
@@ -22,7 +23,7 @@ export class MercuryInfo extends ObjectInfo {
 	 * Sends the checklist settings.
 	 */
 	public override onSendToPlugin(): void {
-		this.sentChecklistSettings()
+		this.sentChecklistSettings();
 	}
 
 	/**

@@ -1,12 +1,6 @@
+import streamDeck, { action, KeyDownEvent, SingletonAction, WillAppearEvent } from "@elgato/streamdeck";
 
-import streamDeck, { 
-	action,
-	KeyDownEvent,
-	SingletonAction,
-	WillAppearEvent 
-} from "@elgato/streamdeck";
-import config from "../config/settings"
-
+import config from "../config/settings";
 import { getSolarSystemObject } from "../utils/solar-system-utils";
 import type { SolarObjectSettings } from "../utils/solar-system-utils";
 
@@ -21,17 +15,13 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	 * @param ev The event payload for the key down event.
 	 * @param name The name of the solar object to search
 	 */
-	public async getInfoAction(ev: KeyDownEvent<SolarObjectSettings>, name: string): Promise<void> {		
+	public async getInfoAction(ev: KeyDownEvent<SolarObjectSettings>, name: string): Promise<void> {
 		const { settings } = ev.payload;
 		settings.name = name;
 
-		await getSolarSystemObject(
-			settings.name,
-			ev.action, 
-			settings
-		);
+		await getSolarSystemObject(settings.name, ev.action, settings);
 	}
-	
+
 	/**
 	 * Listen for messages from the property inspector.
 	 */
@@ -43,7 +33,7 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	}
 
 	/**
-	 * Set the default settings of the solar system object, 
+	 * Set the default settings of the solar system object,
 	 * at the moment only the name in English
 	 * @param ev The event payload for the will appear event.
 	 * @param name The name of the solar system object

@@ -1,6 +1,7 @@
 import streamDeck, { JsonValue, KeyAction } from "@elgato/streamdeck";
-import config from "../config/settings"
-import {type SettingsObject} from "../config/settings"
+
+import config from "../config/settings";
+import { type SettingsObject } from "../config/settings";
 
 const defaultSetting = config.getDefaultSettings()[0];
 
@@ -34,26 +35,26 @@ async function getSolarSystemObject(name: string, action: KeyAction, settings: S
 			settings.data = (await response.json()) as SolarSystemApiData;
 			await action.setSettings(settings);
 		} else {
-			let currentSetting = defaultSetting
+			let currentSetting = defaultSetting;
 
 			if (settings.objectSettings) {
-				currentSetting = config.settings
-					.find( setting => setting.value === settings?.objectSettings?.[settings.count]) as SettingsObject;
-				
+				currentSetting = config.settings.find(
+					(setting) => setting.value === settings?.objectSettings?.[settings.count],
+				) as SettingsObject;
+
 				if (!currentSetting) {
-					currentSetting = defaultSetting
+					currentSetting = defaultSetting;
 				}
 			}
-			
+
 			const apiValue = settings.data[currentSetting.value as keyof SolarSystemApiData];
-			const apiUnit = currentSetting.unit|| '';
-			showData(currentSetting.label, apiValue, apiUnit, action)
-	
+			const apiUnit = currentSetting.unit || "";
+			showData(currentSetting.label, apiValue, apiUnit, action);
+
 			settings.count = pressButtonCountManagement(settings);
 
 			await action.setSettings(settings);
 		}
-
 	} catch (e) {
 		streamDeck.logger.error("Failed to fetch Solar System object info", e);
 	}
@@ -65,13 +66,13 @@ async function getSolarSystemObject(name: string, action: KeyAction, settings: S
  * @returns The updated count value.
  */
 function pressButtonCountManagement(settings: SolarObjectSettings): number {
-	let count = 0
+	let count = 0;
 
-	if (settings.objectSettings && settings.count < settings.objectSettings.length) {		
-		count =  settings.count + 1;
-	} 
-	
-	return count
+	if (settings.objectSettings && settings.count < settings.objectSettings.length) {
+		count = settings.count + 1;
+	}
+
+	return count;
 }
 
 /**
@@ -115,7 +116,7 @@ type SolarObjectSettings = {
 	/**
 	 * Settings to show
 	 */
-	objectSettings?: JsonValue[]
+	objectSettings?: JsonValue[];
 };
 
 export { getSolarSystemObject, pressButtonCountManagement, SolarObjectSettings };
