@@ -1,4 +1,4 @@
-import { action, KeyDownEvent, WillAppearEvent } from "@elgato/streamdeck";
+import { action, type DidReceiveSettingsEvent, KeyDownEvent, WillAppearEvent } from "@elgato/streamdeck";
 
 import type { SolarObjectSettings } from "../utils/solar-system-utils";
 import { ObjectInfo } from "./object-info";
@@ -9,6 +9,14 @@ import { ObjectInfo } from "./object-info";
  */
 @action({ UUID: "com.manuel-estvez-palencia.streamdeck-planets.earth" })
 export class EarthInfo extends ObjectInfo {
+	/**
+	 * Handles when a setting changes in the UI
+	 * @param ev The event received when settings in UI change
+	 */
+	public override onDidReceiveSettings(ev: DidReceiveSettingsEvent): void {
+		this.updateIconSeting(ev)
+	}
+
 	/**
 	 * Handles the key down event for the Earth action.
 	 * Sets the name to "Earth" and fetches Earth data.
@@ -24,6 +32,7 @@ export class EarthInfo extends ObjectInfo {
 	 */
 	public override onSendToPlugin(): void {
 		this.sentChecklistSettings();
+		this.sentIconSettings("Earth")
 	}
 
 	/**

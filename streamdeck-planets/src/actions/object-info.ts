@@ -1,4 +1,4 @@
-import streamDeck, { action, KeyDownEvent, SingletonAction, WillAppearEvent } from "@elgato/streamdeck";
+import streamDeck, { action, DidReceiveSettingsEvent, KeyDownEvent, SingletonAction, WillAppearEvent } from "@elgato/streamdeck";
 
 import config from "../config/settings";
 import { getSolarSystemObject } from "../utils/solar-system-utils";
@@ -23,12 +23,23 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	}
 
 	/**
-	 * Listen for messages from the property inspector.
+	 * Function to sent the checklist options via property inspector to UI.
 	 */
-	public async sentChecklistSettings(): Promise<void> {
+	public sentChecklistSettings(): void {
 		streamDeck.ui.current?.sendToPropertyInspector({
 			event: "getSettings",
-			items: config.settings,
+			items: config.settings
+		});
+	}
+
+	/**
+	 * Function to sent the icon option via property inspector to UI.
+	 * @param name name of the object
+	 */
+	public sentIconSettings(name: string): void{		
+		streamDeck.ui.current?.sendToPropertyInspector({
+			event: "getIconSettings",
+			items: config.getIconSettings(name),
 		});
 	}
 
@@ -41,5 +52,13 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	 */
 	public setDefaultSettings(ev: WillAppearEvent<SolarObjectSettings>, name: string): Promise<void> {
 		return ev.action.setTitle(name);
+	}
+
+	/**
+	 * Checks and update the image of the key according the iconSettings
+	 * @param ev The event for update Icon
+	 */
+	public updateIconSeting(ev: DidReceiveSettingsEvent): void {
+		ev.action.setImage(ev?.payload?.settings?.iconSettings as string);
 	}
 }

@@ -1,18 +1,36 @@
 /* eslint-disable jsdoc/require-jsdoc */
 const settings = [
-	{ label: "Name", initial: true, value: "englishName", default: true },
-	{ label: "Gravity", initial: true, value: "gravity", unit: "m/s²" },
-	{ label: "Escape Speed", initial: true, value: "escape", unit: "m/s" },
-	{ label: "Body type", initial: true, value: "bodyType" },
-	{ label: "Perihelion", initial: false, value: "perihelion", unit: "Km" },
-	{ label: "Aphelion", initial: false, value: "aphelion", unit: "Km" },
-	{ label: "Eccentricity", initial: false, value: "eccentricity" },
-	{ label: "Inclination", initial: false, value: "inclination", unit: "º" },
-	{ label: "Density", initial: false, value: "density", unit: "g/cm3" },
-	{ label: "Main Radius", initial: false, value: "meanRadius", unit: "Km" },
-	{ label: "Equatorial Radius", initial: false, value: "equaRadius", unit: "Km" },
-	{ label: "Polar Radius", initial: false, value: "polarRadius", unit: "Km" },
+	{ label: "Name", default: true, value: "englishName" },
+	{ label: "Gravity", default: true, value: "gravity", unit: "m/s²" },
+	{ label: "Escape Speed", default: true, value: "escape", unit: "m/s" },
+	{ label: "Body type", default: true, value: "bodyType" },
+	{ label: "Perihelion", default: false, value: "perihelion", unit: "Km" },
+	{ label: "Aphelion", default: false, value: "aphelion", unit: "Km" },
+	{ label: "Eccentricity", default: false, value: "eccentricity" },
+	{ label: "Inclination", default: false, value: "inclination", unit: "º" },
+	{ label: "Density", default: false, value: "density", unit: "g/cm3" },
+	{ label: "Main Radius", default: false, value: "meanRadius", unit: "Km" },
+	{ label: "Equatorial Radius", default: false, value: "equaRadius", unit: "Km" },
+	{ label: "Polar Radius", default: false, value: "polarRadius", unit: "Km" },
 ] as SettingsObject[];
+
+const getDefaultSettings = (): SettingsObject[] => settings.filter((setting) => setting?.default);
+
+const getIconSettings = (name: string): IconSettingsObject[] => {
+	let iconOptions = [
+		{label: "Drawn", value: "imgs/actions/counter/icon" }, 
+		{label: "Planet", value: "imgs/actions/counter/key" }
+	]
+
+	if (name) {
+		iconOptions = [
+			{label: "Drawn", value: "imgs/actions/planets/Tierra1" }, 
+			{label: "Planet", value: "imgs/actions/planets/Marte1" }
+		]
+	}
+
+	return iconOptions
+}
 
 type SettingsObject =
 	| {
@@ -37,7 +55,11 @@ type SettingsObject =
 			default?: undefined;
 	  };
 
-const getDefaultSettings = (): typeof settings => settings.filter((setting) => setting?.default);
+type IconSettingsObject = {
+	label: string,
+	value: string
+}
 
-export default { settings, getDefaultSettings };
+
+export default { settings, getDefaultSettings, getIconSettings };
 export type { SettingsObject };
