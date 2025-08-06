@@ -15,7 +15,7 @@
             ],
             "States": [
                 {
-                    "Image": "imgs/actions/planets/Tierra1",
+                    "Image": "imgs/actions/planets/Earth1",
                     "TitleAlignment": "top"
                 }
             ]
@@ -31,7 +31,7 @@
             ],
             "States": [
                 {
-                    "Image": "imgs/actions/planets/Marte1",
+                    "Image": "imgs/actions/planets/Mars1",
                     "TitleAlignment": "top"
                 }
             ]
@@ -47,7 +47,7 @@
             ],
             "States": [
                 {
-                    "Image": "imgs/actions/planets/Mercurio1",
+                    "Image": "imgs/actions/planets/Mercury1",
                     "TitleAlignment": "top"
                 }
             ]
@@ -95,7 +95,7 @@
             ],
             "States": [
                 {
-                    "Image": "imgs/actions/planets/Urano1",
+                    "Image": "imgs/actions/planets/Uranus1",
                     "TitleAlignment": "top"
                 }
             ]
@@ -111,7 +111,7 @@
             ],
             "States": [
                 {
-                    "Image": "imgs/actions/planets/Neptuno1",
+                    "Image": "imgs/actions/planets/Neptune1",
                     "TitleAlignment": "top"
                 }
             ]
@@ -127,7 +127,7 @@
             ],
             "States": [
                 {
-                    "Image": "imgs/actions/planets/Saturno1",
+                    "Image": "imgs/actions/planets/Saturn1",
                     "TitleAlignment": "top"
                 }
             ]

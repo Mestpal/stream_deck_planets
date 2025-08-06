@@ -3,6 +3,8 @@ import { action, KeyDownEvent, WillAppearEvent } from "@elgato/streamdeck";
 import type { SolarObjectSettings } from "../utils/solar-system-utils";
 import { ObjectInfo } from "./object-info";
 
+const planet = "Uranus";
+
 /**
  * Stream Deck action for displaying information about Uranus.
  * Handles button appearance and key press events to fetch Uranus data.
@@ -15,7 +17,7 @@ export class UranusInfo extends ObjectInfo {
 	 * @param ev The event payload for the key down event.
 	 */
 	public override async onKeyDown(ev: KeyDownEvent<SolarObjectSettings>): Promise<void> {
-		await this.getInfoAction(ev, "Uranus");
+		await this.getInfoAction(ev, planet);
 	}
 
 	/**
@@ -23,14 +25,14 @@ export class UranusInfo extends ObjectInfo {
 	 * Sends the checklist settings.
 	 */
 	public override onSendToPlugin(): void {
-		this.sentChecklistSettings();
+		this.setObjectPluginInfo(planet);
 	}
 
 	/**
-	 * Sets the name to "Uranus" as default
+	 * Sets the name to Uranus as default
 	 * @param ev The event payload for the will appear event.
 	 */
 	public override onWillAppear(ev: WillAppearEvent<SolarObjectSettings>): void {
-		this.setDefaultSettings(ev, "Uranus");
+		this.setDefaultSettings(ev, planet);
 	}
 }

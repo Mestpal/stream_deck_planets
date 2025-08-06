@@ -18,19 +18,19 @@ const getDefaultSettings = (): SettingsObject[] => settings.filter((setting) => 
 
 const getIconSettings = (name: string): IconSettingsObject[] => {
 	let iconOptions = [
-		{label: "Drawn", value: "imgs/actions/counter/icon" }, 
-		{label: "Planet", value: "imgs/actions/counter/key" }
-	]
+		{ label: "Drawn", value: "imgs/actions/counter/icon" },
+		{ label: "Planet", value: "imgs/actions/counter/key" },
+	];
 
 	if (name) {
 		iconOptions = [
-			{label: "Drawn", value: "imgs/actions/planets/Tierra1" }, 
-			{label: "Planet", value: "imgs/actions/planets/Marte1" }
-		]
+			{ label: "Drawn", value: `imgs/actions/planets/${name}1` },
+			{ label: "Planet", value: `imgs/actions/planets/${name}R` },
+		];
 	}
 
-	return iconOptions
-}
+	return iconOptions;
+};
 
 type SettingsObject =
 	| {
@@ -56,10 +56,9 @@ type SettingsObject =
 	  };
 
 type IconSettingsObject = {
-	label: string,
-	value: string
-}
-
+	label: string;
+	value: string;
+};
 
 export default { settings, getDefaultSettings, getIconSettings };
 export type { SettingsObject };

@@ -19,19 +19,18 @@ function showData(magnitude: string, value: number | string, unit: string, actio
 
 /**
  * Fetches and displays information about a Solar System object on the Stream Deck.
- * @param name - The name of the Solar System object.
  * @param action - The Stream Deck key action instance.
  * @param settings - The settings for the Solar System object.
  * @returns A promise that resolves when the operation is complete.
  */
-async function getSolarSystemObject(name: string, action: KeyAction, settings: SolarObjectSettings): Promise<void> {
+async function getSolarSystemObject(action: KeyAction, settings: SolarObjectSettings): Promise<void> {
 	try {
 		if (typeof settings.count !== "number") {
 			settings.count = 0;
 		}
 
 		if (!settings.data?.englishName) {
-			const response = await fetch(`https://api.le-systeme-solaire.net/rest.php/bodies/${name}`);
+			const response = await fetch(`https://api.le-systeme-solaire.net/rest.php/bodies/${settings.name}`);
 			settings.data = (await response.json()) as SolarSystemApiData;
 			await action.setSettings(settings);
 		} else {

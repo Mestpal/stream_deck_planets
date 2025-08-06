@@ -1,7 +1,9 @@
-import { action, type DidReceiveSettingsEvent, KeyDownEvent, WillAppearEvent } from "@elgato/streamdeck";
+import { action, KeyDownEvent, WillAppearEvent } from "@elgato/streamdeck";
 
 import type { SolarObjectSettings } from "../utils/solar-system-utils";
 import { ObjectInfo } from "./object-info";
+
+const planet = "Earth";
 
 /**
  * Stream Deck action for displaying information about Earth.
@@ -10,20 +12,12 @@ import { ObjectInfo } from "./object-info";
 @action({ UUID: "com.manuel-estvez-palencia.streamdeck-planets.earth" })
 export class EarthInfo extends ObjectInfo {
 	/**
-	 * Handles when a setting changes in the UI
-	 * @param ev The event received when settings in UI change
-	 */
-	public override onDidReceiveSettings(ev: DidReceiveSettingsEvent): void {
-		this.updateIconSeting(ev)
-	}
-
-	/**
 	 * Handles the key down event for the Earth action.
 	 * Sets the name to "Earth" and fetches Earth data.
 	 * @param ev The event payload for the key down event.
 	 */
 	public override async onKeyDown(ev: KeyDownEvent<SolarObjectSettings>): Promise<void> {
-		await this.getInfoAction(ev, "Earth");
+		await this.getInfoAction(ev, planet);
 	}
 
 	/**
@@ -31,15 +25,14 @@ export class EarthInfo extends ObjectInfo {
 	 * Sends the checklist settings.
 	 */
 	public override onSendToPlugin(): void {
-		this.sentChecklistSettings();
-		this.sentIconSettings("Earth")
+		this.setObjectPluginInfo(planet);
 	}
 
 	/**
-	 * Sets the name to "Earth" as default
+	 * Sets the configuration when the plugin is shown
 	 * @param ev The event payload for the will appear event.
 	 */
 	public override onWillAppear(ev: WillAppearEvent<SolarObjectSettings>): void {
-		this.setDefaultSettings(ev, "Earth");
+		this.setDefaultSettings(ev, planet);
 	}
 }

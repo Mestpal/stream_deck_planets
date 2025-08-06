@@ -1,4 +1,10 @@
-import streamDeck, { action, DidReceiveSettingsEvent, KeyDownEvent, SingletonAction, WillAppearEvent } from "@elgato/streamdeck";
+import streamDeck, {
+	action,
+	type DidReceiveSettingsEvent,
+	KeyDownEvent,
+	SingletonAction,
+	WillAppearEvent,
+} from "@elgato/streamdeck";
 
 import config from "../config/settings";
 import { getSolarSystemObject } from "../utils/solar-system-utils";
@@ -19,7 +25,15 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 		const { settings } = ev.payload;
 		settings.name = name;
 
-		await getSolarSystemObject(settings.name, ev.action, settings);
+		await getSolarSystemObject(ev.action, settings);
+	}
+
+	/**
+	 * Handles when a setting changes in the UI
+	 * @param ev The event received when settings in UI change
+	 */
+	public override onDidReceiveSettings(ev: DidReceiveSettingsEvent): void {
+		this.updateIconSeting(ev);
 	}
 
 	/**
@@ -28,15 +42,15 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	public sentChecklistSettings(): void {
 		streamDeck.ui.current?.sendToPropertyInspector({
 			event: "getSettings",
-			items: config.settings
+			items: config.settings,
 		});
 	}
 
 	/**
 	 * Function to sent the icon option via property inspector to UI.
-	 * @param name name of the object
+	 * @param name name of the space object
 	 */
-	public sentIconSettings(name: string): void{		
+	public sentIconSettings(name: string): void {
 		streamDeck.ui.current?.sendToPropertyInspector({
 			event: "getIconSettings",
 			items: config.getIconSettings(name),
@@ -52,6 +66,15 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	 */
 	public setDefaultSettings(ev: WillAppearEvent<SolarObjectSettings>, name: string): Promise<void> {
 		return ev.action.setTitle(name);
+	}
+
+	/**
+	 * Function to sent all the setings to the plugin
+	 * @param name Name of the object we want its settings
+	 */
+	public setObjectPluginInfo(name: string): void {
+		this.sentChecklistSettings();
+		this.sentIconSettings(name);
 	}
 
 	/**
