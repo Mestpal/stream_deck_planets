@@ -51,7 +51,6 @@ async function getSolarSystemObject(action: KeyAction, settings: SolarObjectSett
 			showData(currentSetting.label, apiValue, apiUnit, action);
 
 			settings.count = pressButtonCountManagement(settings);
-
 			await action.setSettings(settings);
 		}
 	} catch (e) {
@@ -113,9 +112,13 @@ type SolarObjectSettings = {
 	 */
 	name: string;
 	/**
-	 * Settings to show
+	 * Settings for checklist
 	 */
 	objectSettings?: JsonValue[];
+	/**
+	 * Settings for checklist
+	 */
+	iconSettings?: string;
 };
 
 export { getSolarSystemObject, pressButtonCountManagement, SolarObjectSettings };

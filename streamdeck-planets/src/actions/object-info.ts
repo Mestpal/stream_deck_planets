@@ -1,6 +1,8 @@
 import streamDeck, {
 	action,
 	type DidReceiveSettingsEvent,
+	DialAction,
+	KeyAction,
 	KeyDownEvent,
 	SingletonAction,
 	WillAppearEvent,
@@ -33,7 +35,7 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	 * @param ev The event received when settings in UI change
 	 */
 	public override onDidReceiveSettings(ev: DidReceiveSettingsEvent): void {
-		this.updateIconSeting(ev);
+		this.updateIconSetting(ev.action, ev.payload.settings.iconSettings as string);
 	}
 
 	/**
@@ -62,10 +64,28 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	 * at the moment only the name in English
 	 * @param ev The event payload for the will appear event.
 	 * @param name The name of the solar system object
-	 * @returns A promise that resolves when the title is set.
 	 */
-	public setDefaultSettings(ev: WillAppearEvent<SolarObjectSettings>, name: string): Promise<void> {
-		return ev.action.setTitle(name);
+	public async setDefaultSettings(ev: WillAppearEvent<SolarObjectSettings>, name: string): Promise<void> {
+		ev.action.setTitle(name);
+		this.updateIconSetting(ev.action, ev.payload.settings.iconSettings as string);
+	}
+
+	/**
+	 * Function to sent all the setings to the plugin
+	 * @param name Name of the object we want its settings
+	 */
+	public setObjectPluginInfo(name: string): void {
+		this.sentChecklistSettings();
+		this.sentIconSettings(name);
+	}
+ 
+	/**
+	 * Checks and update the image of the key according the iconSettings
+	 *  @param action - The Stream Deck key action instance.
+	 * @param name - The name of the object
+	 */
+	public async updateIconSetting(action: DialAction | KeyAction, name: string): Promise<void> {		
+		action.setImage(name);
 	}
 
 	/**
