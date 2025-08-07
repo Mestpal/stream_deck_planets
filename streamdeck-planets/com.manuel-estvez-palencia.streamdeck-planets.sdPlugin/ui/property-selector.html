@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+	<head lang="en">
+		<meta charset="utf-8" />
+		<script src="sdpi-components.js"></script>
+	</head>
+
+	<body>
+		<sdpi-item label="Icon">
+			<sdpi-select
+				hot-reload="true"
+				placeholder="Please choose the type of icon you want"
+				datasource="getIconSettings"
+				setting="iconSettings"
+			/>
+		</sdpi-item>
+
+		<sdpi-item label="Settings to Show">
+			<sdpi-checkbox-list columns="2" datasource="getSettings" hot-reload="true" setting="objectSettings" />
+		</sdpi-item>
+	</body>
+</html>

@@ -1,6 +1,9 @@
 import { action, KeyDownEvent, WillAppearEvent } from "@elgato/streamdeck";
+
 import type { SolarObjectSettings } from "../utils/solar-system-utils";
 import { ObjectInfo } from "./object-info";
+
+const planet = "Earth";
 
 /**
  * Stream Deck action for displaying information about Earth.
@@ -14,14 +17,22 @@ export class EarthInfo extends ObjectInfo {
 	 * @param ev The event payload for the key down event.
 	 */
 	public override async onKeyDown(ev: KeyDownEvent<SolarObjectSettings>): Promise<void> {
-		await this.getInfoAction(ev, "Earth")
+		await this.getInfoAction(ev, planet);
 	}
 
 	/**
-	 * Sets the name to "Earth" as default
+	 * Handles the send to plugin event for the Earth action.
+	 * Sends the checklist settings.
+	 */
+	public override onSendToPlugin(): void {
+		this.setObjectPluginInfo(planet);
+	}
+
+	/**
+	 * Sets the configuration when the plugin is shown
 	 * @param ev The event payload for the will appear event.
 	 */
 	public override onWillAppear(ev: WillAppearEvent<SolarObjectSettings>): void {
-		this.setDefaultSettings(ev, "Earth");
+		this.setDefaultSettings(ev, planet);
 	}
 }

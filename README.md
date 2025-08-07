@@ -8,3 +8,5 @@ A compact plugin designed to provide information about the planets in our solar 
 
 All data presented in this project is sourced from **The Solar System OpenData** ([The Solar System OpenData](https://api.le-systeme-solaire.net/en/)).
 Thank you for making your work available to the public!
+
+All the images used in the project are IA generated, for real images please consult other sources like space agencies.

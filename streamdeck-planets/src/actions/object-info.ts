@@ -1,5 +1,12 @@
-import { action, KeyDownEvent, SingletonAction, WillAppearEvent } from "@elgato/streamdeck";
+import streamDeck, {
+	action,
+	type DidReceiveSettingsEvent,
+	KeyDownEvent,
+	SingletonAction,
+	WillAppearEvent,
+} from "@elgato/streamdeck";
 
+import config from "../config/settings";
 import { getSolarSystemObject } from "../utils/solar-system-utils";
 import type { SolarObjectSettings } from "../utils/solar-system-utils";
 
@@ -18,11 +25,40 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 		const { settings } = ev.payload;
 		settings.name = name;
 
-		await getSolarSystemObject(settings.name, ev.action, settings);
+		await getSolarSystemObject(ev.action, settings);
 	}
 
 	/**
-	 * Set the default settings of the solar system object, 
+	 * Handles when a setting changes in the UI
+	 * @param ev The event received when settings in UI change
+	 */
+	public override onDidReceiveSettings(ev: DidReceiveSettingsEvent): void {
+		this.updateIconSeting(ev);
+	}
+
+	/**
+	 * Function to sent the checklist options via property inspector to UI.
+	 */
+	public sentChecklistSettings(): void {
+		streamDeck.ui.current?.sendToPropertyInspector({
+			event: "getSettings",
+			items: config.settings,
+		});
+	}
+
+	/**
+	 * Function to sent the icon option via property inspector to UI.
+	 * @param name name of the space object
+	 */
+	public sentIconSettings(name: string): void {
+		streamDeck.ui.current?.sendToPropertyInspector({
+			event: "getIconSettings",
+			items: config.getIconSettings(name),
+		});
+	}
+
+	/**
+	 * Set the default settings of the solar system object,
 	 * at the moment only the name in English
 	 * @param ev The event payload for the will appear event.
 	 * @param name The name of the solar system object
@@ -30,5 +66,22 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	 */
 	public setDefaultSettings(ev: WillAppearEvent<SolarObjectSettings>, name: string): Promise<void> {
 		return ev.action.setTitle(name);
+	}
+
+	/**
+	 * Function to sent all the setings to the plugin
+	 * @param name Name of the object we want its settings
+	 */
+	public setObjectPluginInfo(name: string): void {
+		this.sentChecklistSettings();
+		this.sentIconSettings(name);
+	}
+
+	/**
+	 * Checks and update the image of the key according the iconSettings
+	 * @param ev The event for update Icon
+	 */
+	public updateIconSeting(ev: DidReceiveSettingsEvent): void {
+		ev.action.setImage(ev?.payload?.settings?.iconSettings as string);
 	}
 }
