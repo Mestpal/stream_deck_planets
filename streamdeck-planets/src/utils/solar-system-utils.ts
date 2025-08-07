@@ -113,9 +113,13 @@ type SolarObjectSettings = {
 	 */
 	name: string;
 	/**
-	 * Settings to show
+	 * Settings for checklist
 	 */
 	objectSettings?: JsonValue[];
+	/**
+	 * Settings for checklist
+	 */
+	iconSettings?: string;
 };
 
 export { getSolarSystemObject, pressButtonCountManagement, SolarObjectSettings };
