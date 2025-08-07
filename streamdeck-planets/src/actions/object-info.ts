@@ -87,4 +87,21 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	public async updateIconSetting(action: DialAction | KeyAction, name: string): Promise<void> {		
 		action.setImage(name);
 	}
+
+	/**
+	 * Function to sent all the setings to the plugin
+	 * @param name Name of the object we want its settings
+	 */
+	public setObjectPluginInfo(name: string): void {
+		this.sentChecklistSettings();
+		this.sentIconSettings(name);
+	}
+
+	/**
+	 * Checks and update the image of the key according the iconSettings
+	 * @param ev The event for update Icon
+	 */
+	public updateIconSeting(ev: DidReceiveSettingsEvent): void {
+		ev.action.setImage(ev?.payload?.settings?.iconSettings as string);
+	}
 }

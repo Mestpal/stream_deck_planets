@@ -51,7 +51,6 @@ async function getSolarSystemObject(action: KeyAction, settings: SolarObjectSett
 			showData(currentSetting.label, apiValue, apiUnit, action);
 
 			settings.count = pressButtonCountManagement(settings);
-
 			await action.setSettings(settings);
 		}
 	} catch (e) {
