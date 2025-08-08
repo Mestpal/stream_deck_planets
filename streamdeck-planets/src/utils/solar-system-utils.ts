@@ -2,8 +2,12 @@ import streamDeck, { JsonValue, KeyAction } from "@elgato/streamdeck";
 
 import config from "../config/settings";
 import { type SettingsObject } from "../config/settings";
+import { TextScroller } from "./scroller";
 
 const defaultSetting = config.getDefaultSettings()[0];
+const scroller = new TextScroller('', 8);
+const waitingTime = 600;
+
 
 /**
  * Displays a magnitude label on the Stream Deck key, then shows the value and unit after a short delay.
@@ -13,8 +17,16 @@ const defaultSetting = config.getDefaultSettings()[0];
  * @param action - The Stream Deck key action instance.
  */
 function showData(magnitude: string, value: number | string, unit: string, action: KeyAction): void {
-	action.setTitle(magnitude);
-	setTimeout(() => action.setTitle(`${value} \n ${unit}`), 1000);
+	scroller.stopScroll()
+
+	scroller.text = magnitude
+	scroller.startScroll(waitingTime, action)
+
+	setTimeout(() => {
+		scroller.stopScroll()
+		scroller.text = `${value} ${unit}`
+		scroller.startScroll(waitingTime, action); // 200 ms entre actualizaciones
+	}, waitingTime * scroller.text.length);
 }
 
 /**
@@ -48,6 +60,7 @@ async function getSolarSystemObject(action: KeyAction, settings: SolarObjectSett
 
 			const apiValue = settings.data[currentSetting.value as keyof SolarSystemApiData];
 			const apiUnit = currentSetting.unit || "";
+
 			showData(currentSetting.label, apiValue, apiUnit, action);
 
 			settings.count = pressButtonCountManagement(settings);
