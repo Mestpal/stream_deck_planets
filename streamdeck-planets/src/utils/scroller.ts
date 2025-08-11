@@ -1,23 +1,23 @@
 import { KeyAction } from "@elgato/streamdeck";
 
 /**
- *
+ * Class to create an object that manage the scrolling of a text
  */
 export class TextScroller {
 	/**
-	 *
+	 * text to scroll
 	 */
 	public text: string;
 	/**
-	 *
+	 * Timer Id
 	 */
 	private intervalId?: NodeJS.Timeout;
 	/**
-	 *
+	 * position to start to generate the visible text in the scroll
 	 */
 	private position: number = 0;
 	/**
-	 *
+	 * Size of the text to scroll
 	 */
 	private windowSize: number;
 
@@ -32,15 +32,14 @@ export class TextScroller {
 	}
 
 	/**
-	 *
-	 * @param speedMs
-	 * @param action
+	 * Function to start scrolling the text
+	 * @param speedMs speed of the scroll in ms
+	 * @param action streamdeck Keyaction
 	 */
 	public startScroll(speedMs: number = 200, action: KeyAction): void {        
 		if (this.text.length <= this.windowSize) {
 			action.setTitle(this.text)
 		} else {
-			this.text += "   "
 			this.intervalId = setInterval(() => {
 				const visibleText = this.getVisibleText();
 				action.setTitle(visibleText); 
@@ -50,7 +49,7 @@ export class TextScroller {
 	}
 
 	/**
-	 *
+	 * Function to stop scrolling text
 	 */
 	public stopScroll(): void {
 		if (this.intervalId) {
@@ -60,7 +59,9 @@ export class TextScroller {
 	}
 
 	/**
-	 *
+	 * Function to generate the text to show in each moment of the scroll
+	 * of the text
+	 * @returns a string with the portion of text to show
 	 */
 	private getVisibleText(): string {
 		const end = this.position + this.windowSize;

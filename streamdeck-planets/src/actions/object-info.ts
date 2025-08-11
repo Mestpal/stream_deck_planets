@@ -44,7 +44,7 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	public sentChecklistSettings(): void {
 		streamDeck.ui.current?.sendToPropertyInspector({
 			event: "getSettings",
-			items: config.settings,
+			items: config.settings.filter(setting => !setting.avoid),
 		});
 	}
 

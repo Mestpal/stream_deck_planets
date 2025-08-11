@@ -5,8 +5,10 @@ import { type SettingsObject } from "../config/settings";
 import { TextScroller } from "./scroller";
 
 const defaultSetting = config.getDefaultSettings()[0];
-const scroller = new TextScroller('', 8);
-const waitingTime = 600;
+const maximunLength = 8;
+const emptyString = Array(maximunLength).fill(' ').join('')
+const scroller = new TextScroller('', maximunLength);
+const waitingTime = 300;
 
 
 /**
@@ -19,14 +21,24 @@ const waitingTime = 600;
 function showData(magnitude: string, value: number | string, unit: string, action: KeyAction): void {
 	scroller.stopScroll()
 
-	scroller.text = magnitude
+	if (magnitude.length <= maximunLength) {		
+		scroller.text = magnitude
+	} else {
+		scroller.text = `${emptyString}${magnitude}`
+	}
 	scroller.startScroll(waitingTime, action)
 
 	setTimeout(() => {
 		scroller.stopScroll()
-		scroller.text = `${value} ${unit}`
-		scroller.startScroll(waitingTime, action); // 200 ms entre actualizaciones
+		action.setTitle(' ')
+		if (magnitude === 'Name') {
+			scroller.text = `${value}`
+		} else {
+			scroller.text = `${emptyString}${value}${unit}${emptyString}${magnitude}`
+		}
+		scroller.startScroll(waitingTime, action);
 	}, waitingTime * scroller.text.length);
+
 }
 
 /**
