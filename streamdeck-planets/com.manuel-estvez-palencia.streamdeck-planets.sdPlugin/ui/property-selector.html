@@ -12,12 +12,11 @@
 			streamDeckClient.getSettings()
 				.then(async (res) => {
 					let newSettings = {
-						iconSettings: 'Drawn',
 						objectSettings: ['gravity', 'density', 'meanRadius'],
 						init: true
 					}
 					
-					if (!res.settings?.objectSettings?.length && !res.settings?.init) {
+					if (!res.settings?.init) {
 						streamDeckClient.setSettings(newSettings)
 					} else {
 						newSettings = {
@@ -28,6 +27,7 @@
 
 					await streamDeckClient.setSettings(newSettings)
 					document.querySelector('[setting="objectSettings"]').value = newSettings.objectSettings
+					
 				})
 		</script>
 		<sdpi-item label="Icon">
