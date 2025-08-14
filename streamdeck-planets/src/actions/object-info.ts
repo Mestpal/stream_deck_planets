@@ -9,8 +9,9 @@ import streamDeck, {
 } from "@elgato/streamdeck";
 
 import config from "../config/settings";
-import { getSolarSystemObject } from "../utils/solar-system-utils";
-import type { SolarObjectSettings } from "../utils/solar-system-utils";
+import { getSolarSystemObject, showData } from "../utils/solar-system-utils";
+import type { SolarObjectSettings, getSolarSystemObjectType } from "../utils/solar-system-utils";
+import { TextScroller } from "../utils/scroller";
 
 /**
  * Stream Deck action for displaying information about Solar System Object.
@@ -22,12 +23,18 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	 * Function to get the solar sytem object
 	 * @param ev The event payload for the key down event.
 	 * @param name The name of the solar object to search
+	 * @param scroller
 	 */
-	public async getInfoAction(ev: KeyDownEvent<SolarObjectSettings>, name: string): Promise<void> {
+	public async getInfoAction(ev: KeyDownEvent<SolarObjectSettings>, name: string, scroller: TextScroller): Promise<void> {
 		const { settings } = ev.payload;
 		settings.name = name;
 
-		await getSolarSystemObject(ev.action, settings);
+		const result = await getSolarSystemObject(ev.action, settings) as getSolarSystemObjectType;
+		if (result?.apiLabel) {
+			showData(result.apiLabel, result.apiValue, result.apiUnit, ev.action, scroller);
+		}
+
+		
 	}
 
 	/**

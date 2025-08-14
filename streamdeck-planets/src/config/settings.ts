@@ -2,14 +2,14 @@
 const settings = [
 	{ label: "Name", checked: true, value: "englishName", avoid: true},
 	{ label: "Gravity", checked: true, value: "gravity", unit: "m/s²" },
-	{ label: "Escape Speed", checked: true, value: "escape", unit: "m/s" },
-	{ label: "Body type", checked: true, value: "bodyType" },
+	{ label: "Escape Speed", checked: false, value: "escape", unit: "m/s" },
+	{ label: "Body type", checked: false, value: "bodyType" },
 	{ label: "Perihelion", checked: false, value: "perihelion", unit: "Km" },
 	{ label: "Aphelion", checked: false, value: "aphelion", unit: "Km" },
 	{ label: "Eccentricity", checked: false, value: "eccentricity" },
 	{ label: "Inclination", checked: false, value: "inclination", unit: "º" },
-	{ label: "Density", checked: false, value: "density", unit: "g/cm3" },
-	{ label: "Main Radius", checked: false, value: "meanRadius", unit: "Km" },
+	{ label: "Density", checked: true, value: "density", unit: "g/cm3" },
+	{ label: "Main Radius", checked: true, value: "meanRadius", unit: "Km" },
 	{ label: "Equatorial Radius", checked: false, value: "equaRadius", unit: "Km" },
 	{ label: "Polar Radius", checked: false, value: "polarRadius", unit: "Km" },
 ] as SettingsObject[];

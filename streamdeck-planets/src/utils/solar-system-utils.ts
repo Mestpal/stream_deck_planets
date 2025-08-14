@@ -7,7 +7,6 @@ import { TextScroller } from "./scroller";
 const defaultSetting = config.getDefaultSettings()[0];
 const maximunLength = 8;
 const emptyString = Array(maximunLength).fill(' ').join('')
-const scroller = new TextScroller('', maximunLength);
 const waitingTime = 300;
 
 
@@ -17,8 +16,9 @@ const waitingTime = 300;
  * @param value - The value to display after the delay.
  * @param unit - The unit to display after the delay.
  * @param action - The Stream Deck key action instance.
+ * @param scroller
  */
-function showData(magnitude: string, value: number | string, unit: string, action: KeyAction): void {
+function showData(magnitude: string, value: number | string, unit: string, action: KeyAction, scroller: TextScroller): void {
 	scroller.stopScroll()
 
 	if (magnitude.length <= maximunLength) {		
@@ -26,6 +26,7 @@ function showData(magnitude: string, value: number | string, unit: string, actio
 	} else {
 		scroller.text = `${emptyString}${magnitude}`
 	}
+
 	scroller.startScroll(waitingTime, action)
 
 	setTimeout(() => {
@@ -36,7 +37,12 @@ function showData(magnitude: string, value: number | string, unit: string, actio
 		} else {
 			scroller.text = `${emptyString}${value}${unit}${emptyString}${magnitude}`
 		}
-		scroller.startScroll(waitingTime, action);
+
+		if (scroller.text.length > maximunLength) {
+			scroller.startScroll(waitingTime, action);
+		} else {
+			action.setTitle(scroller.text)
+		}
 	}, waitingTime * scroller.text.length);
 
 }
@@ -47,7 +53,7 @@ function showData(magnitude: string, value: number | string, unit: string, actio
  * @param settings - The settings for the Solar System object.
  * @returns A promise that resolves when the operation is complete.
  */
-async function getSolarSystemObject(action: KeyAction, settings: SolarObjectSettings): Promise<void> {
+async function getSolarSystemObject(action: KeyAction, settings: SolarObjectSettings): Promise<getSolarSystemObjectType | object | undefined> {
 	try {
 		if (typeof settings.count !== "number") {
 			settings.count = 0;
@@ -57,6 +63,7 @@ async function getSolarSystemObject(action: KeyAction, settings: SolarObjectSett
 			const response = await fetch(`https://api.le-systeme-solaire.net/rest.php/bodies/${settings.name}`);
 			settings.data = (await response.json()) as SolarSystemApiData;
 			await action.setSettings(settings);
+			return {};
 		} else {
 			let currentSetting = defaultSetting;
 
@@ -70,16 +77,18 @@ async function getSolarSystemObject(action: KeyAction, settings: SolarObjectSett
 				}
 			}
 
-			const apiValue = settings.data[currentSetting.value as keyof SolarSystemApiData];
-			const apiUnit = currentSetting.unit || "";
-
-			showData(currentSetting.label, apiValue, apiUnit, action);
-
 			settings.count = pressButtonCountManagement(settings);
 			await action.setSettings(settings);
+
+			return {
+				apiLabel: currentSetting.label,
+				apiValue: settings.data[currentSetting.value as keyof SolarSystemApiData], 
+				apiUnit: currentSetting.unit || ""
+			}
 		}
 	} catch (e) {
 		streamDeck.logger.error("Failed to fetch Solar System object info", e);
+		return undefined;
 	}
 }
 
@@ -146,4 +155,22 @@ type SolarObjectSettings = {
 	iconSettings?: string;
 };
 
-export { getSolarSystemObject, pressButtonCountManagement, SolarObjectSettings };
+/**
+ * Type representing the return value from getSolarSystemObject function.
+ */
+type getSolarSystemObjectType = {
+	/**
+	 * The label for the API data point.
+	 */
+	apiLabel: string,
+	/**
+	 * The value from the Solar System API data.
+	 */
+	apiValue: keyof SolarSystemApiData,
+	/**
+	 * The unit of measurement for the value.
+	 */
+	apiUnit: string
+}
+
+export { getSolarSystemObject, getSolarSystemObjectType, pressButtonCountManagement, SolarObjectSettings, showData };

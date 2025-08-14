@@ -2,8 +2,10 @@ import { action, KeyDownEvent, WillAppearEvent } from "@elgato/streamdeck";
 
 import type { SolarObjectSettings } from "../utils/solar-system-utils";
 import { ObjectInfo } from "./object-info";
+import { TextScroller } from "../utils/scroller";
 
 const planet = "Venus";
+const scroller = new TextScroller('', 8);
 
 /**
  * Stream Deck action for displaying information about Venus.
@@ -12,12 +14,12 @@ const planet = "Venus";
 @action({ UUID: "com.manuel-estvez-palencia.streamdeck-planets.venus" })
 export class VenusInfo extends ObjectInfo {
 	/**
-	 * Handles the key down event for the Venus action.
-	 * Sets the name to "Venus" and fetches Venus data.
+	 * Handles the key down event for the Earth action.
+	 * Sets the name to "Earth" and fetches Earth data.
 	 * @param ev The event payload for the key down event.
 	 */
 	public override async onKeyDown(ev: KeyDownEvent<SolarObjectSettings>): Promise<void> {
-		await this.getInfoAction(ev, planet);
+		await this.getInfoAction(ev, planet, scroller);
 	}
 
 	/**

@@ -20,3 +20,20 @@
 		</sdpi-item>
 	</body>
 </html>
+
+<script>
+	const { streamDeckClient } = SDPIComponents;
+	streamDeckClient.sendToPropertyInspector.subscribe((ev) => {
+		const { payload } = ev;
+		if (payload.event === 'getSettings') {
+			let checkedAtInit = []
+			payload.items.forEach((item) => {
+				if (item.checked) {
+					checkedAtInit = checkedAtInit.concat(item.value)
+				}
+			});
+			
+			document.querySelector('[setting="objectSettings"]').value = checkedAtInit
+		}
+	})
+</script>
