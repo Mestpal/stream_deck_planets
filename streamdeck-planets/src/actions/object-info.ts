@@ -20,12 +20,20 @@ import { TextScroller } from "../utils/scroller";
 @action({ UUID: "com.manuel-estvez-palencia.streamdeck-planets.object" })
 export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	/**
+	 * Handles when a setting changes in the UI
+	 * @param ev The event received when settings in UI change
+	 */
+	public override onDidReceiveSettings(ev: DidReceiveSettingsEvent): void {
+		this.updateIconSetting(ev.action, ev.payload.settings.iconSettings as string);
+	}
+
+	/**
 	 * Function to get the solar sytem object
 	 * @param ev The event payload for the key down event.
 	 * @param name The name of the solar object to search
 	 * @param scroller
 	 */
-	public async getInfoAction(ev: KeyDownEvent<SolarObjectSettings>, name: string, scroller: TextScroller): Promise<void> {
+	protected async getInfoAction(ev: KeyDownEvent<SolarObjectSettings>, name: string, scroller: TextScroller): Promise<void> {
 		const { settings } = ev.payload;
 		settings.name = name;
 
@@ -38,17 +46,9 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	}
 
 	/**
-	 * Handles when a setting changes in the UI
-	 * @param ev The event received when settings in UI change
-	 */
-	public override onDidReceiveSettings(ev: DidReceiveSettingsEvent): void {
-		this.updateIconSetting(ev.action, ev.payload.settings.iconSettings as string);
-	}
-
-	/**
 	 * Function to sent the checklist options via property inspector to UI.
 	 */
-	public sentChecklistSettings(): void {
+	protected sentChecklistSettings(): void {
 		streamDeck.ui.current?.sendToPropertyInspector({
 			event: "getSettings",
 			items: config.settings.filter(setting => !setting.avoid),
@@ -59,7 +59,7 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	 * Function to sent the icon option via property inspector to UI.
 	 * @param name name of the space object
 	 */
-	public sentIconSettings(name: string): void {
+	protected sentIconSettings(name: string): void {
 		streamDeck.ui.current?.sendToPropertyInspector({
 			event: "getIconSettings",
 			items: config.getIconSettings(name),
@@ -72,7 +72,7 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	 * @param ev The event payload for the will appear event.
 	 * @param name The name of the solar system object
 	 */
-	public async setDefaultSettings(ev: WillAppearEvent<SolarObjectSettings>, name: string): Promise<void> {
+	protected async setDefaultSettings(ev: WillAppearEvent<SolarObjectSettings>, name: string): Promise<void> {
 		ev.action.setTitle(name);
 		this.updateIconSetting(ev.action, ev.payload.settings.iconSettings as string);
 	}
@@ -81,7 +81,7 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	 * Function to sent all the setings to the plugin
 	 * @param name Name of the object we want its settings
 	 */
-	public setObjectPluginInfo(name: string): void {
+	protected setObjectPluginInfo(name: string): void {
 		this.sentChecklistSettings();
 		this.sentIconSettings(name);
 	}
@@ -91,7 +91,7 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	 *  @param action - The Stream Deck key action instance.
 	 * @param name - The name of the object
 	 */
-	public async updateIconSetting(action: DialAction | KeyAction, name: string): Promise<void> {		
+	protected async updateIconSetting(action: DialAction | KeyAction, name: string): Promise<void> {		
 		action.setImage(name);
 	}
 }

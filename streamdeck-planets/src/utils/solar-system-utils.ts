@@ -16,7 +16,7 @@ const waitingTime = 300;
  * @param value - The value to display after the delay.
  * @param unit - The unit to display after the delay.
  * @param action - The Stream Deck key action instance.
- * @param scroller
+ * @param scroller - TextScroller object
  */
 function showData(magnitude: string, value: number | string, unit: string, action: KeyAction, scroller: TextScroller): void {
 	scroller.stopScroll()
@@ -37,7 +37,7 @@ function showData(magnitude: string, value: number | string, unit: string, actio
 		} else {
 			scroller.text = `${emptyString}${value}${unit}${emptyString}${magnitude}`
 		}
-
+		
 		if (scroller.text.length > maximunLength) {
 			scroller.startScroll(waitingTime, action);
 		} else {

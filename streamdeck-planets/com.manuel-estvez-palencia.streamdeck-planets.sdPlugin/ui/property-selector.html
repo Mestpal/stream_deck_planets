@@ -6,6 +6,30 @@
 	</head>
 
 	<body>
+		<script>
+			const { streamDeckClient } = SDPIComponents;
+
+			streamDeckClient.getSettings()
+				.then(async (res) => {
+					let newSettings = {
+						iconSettings: 'Drawn',
+						objectSettings: ['gravity', 'density', 'meanRadius'],
+						init: true
+					}
+					
+					if (!res.settings?.objectSettings?.length && !res.settings?.init) {
+						streamDeckClient.setSettings(newSettings)
+					} else {
+						newSettings = {
+							...newSettings,
+							...res.settings
+						}
+					}
+
+					await streamDeckClient.setSettings(newSettings)
+					document.querySelector('[setting="objectSettings"]').value = newSettings.objectSettings
+				})
+		</script>
 		<sdpi-item label="Icon">
 			<sdpi-select
 				hot-reload="true"
@@ -16,24 +40,12 @@
 		</sdpi-item>
 
 		<sdpi-item label="Settings to Show">
-			<sdpi-checkbox-list columns="2" datasource="getSettings" hot-reload="true" setting="objectSettings" />
+			<sdpi-checkbox-list 
+				columns="2"
+				datasource="getSettings"
+				hot-reload="true"
+				setting="objectSettings" />
 		</sdpi-item>
 	</body>
 </html>
 
-<script>
-	const { streamDeckClient } = SDPIComponents;
-	streamDeckClient.sendToPropertyInspector.subscribe((ev) => {
-		const { payload } = ev;
-		if (payload.event === 'getSettings') {
-			let checkedAtInit = []
-			payload.items.forEach((item) => {
-				if (item.checked) {
-					checkedAtInit = checkedAtInit.concat(item.value)
-				}
-			});
-			
-			document.querySelector('[setting="objectSettings"]').value = checkedAtInit
-		}
-	})
-</script>

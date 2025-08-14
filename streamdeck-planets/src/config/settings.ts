@@ -8,8 +8,8 @@ const settings = [
 	{ label: "Aphelion", checked: false, value: "aphelion", unit: "Km" },
 	{ label: "Eccentricity", checked: false, value: "eccentricity" },
 	{ label: "Inclination", checked: false, value: "inclination", unit: "º" },
-	{ label: "Density", checked: true, value: "density", unit: "g/cm3" },
-	{ label: "Main Radius", checked: true, value: "meanRadius", unit: "Km" },
+	{ label: "Density", checked: true, value: "density", unit: "g/cm³" },
+	{ label: "Mean Radius", checked: true, value: "meanRadius", unit: "Km" },
 	{ label: "Equatorial Radius", checked: false, value: "equaRadius", unit: "Km" },
 	{ label: "Polar Radius", checked: false, value: "polarRadius", unit: "Km" },
 ] as SettingsObject[];
