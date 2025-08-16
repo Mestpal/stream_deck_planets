@@ -10,7 +10,7 @@ import streamDeck, {
 
 import config from "../config/settings";
 import { getSolarSystemObject, showData } from "../utils/solar-system-utils";
-import type { SolarObjectSettings, getSolarSystemObjectType } from "../utils/solar-system-utils";
+import { getSolarSystemObjectType, SolarObjectSettings} from '../utils/types'
 import { TextScroller } from "../utils/scroller";
 
 /**
@@ -31,18 +31,17 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	 * Function to get the solar sytem object
 	 * @param ev The event payload for the key down event.
 	 * @param name The name of the solar object to search
-	 * @param scroller
+	 * @param scroller scroller entity
 	 */
 	protected async getInfoAction(ev: KeyDownEvent<SolarObjectSettings>, name: string, scroller: TextScroller): Promise<void> {
 		const { settings } = ev.payload;
 		settings.name = name;
 
 		const result = await getSolarSystemObject(ev.action, settings) as getSolarSystemObjectType;
+
 		if (result?.apiLabel) {
 			showData(result.apiLabel, result.apiValue, result.apiUnit, ev.action, scroller);
 		}
-
-		
 	}
 
 	/**

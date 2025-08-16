@@ -5,6 +5,22 @@
     "PropertyInspectorPath": "./ui/property-selector.html",
     "Actions": [
         {
+            "Name": "Search space object",
+            "UUID": "com.manuel-estvez-palencia.streamdeck-planets.custom",
+            "Icon": "imgs/icons/Custom",
+            "Tooltip": "Findd the object that you want info",
+            "PropertyInspectorPath": "ui/generic-object.html",
+            "Controllers": [
+                "Keypad"
+            ],
+            "States": [
+                {
+                    "Image": "imgs/actions/planets/Custom1",
+                    "TitleAlignment": "top"
+                }
+            ]
+        },
+        {
             "Name": "Mercury Info",
             "UUID": "com.manuel-estvez-palencia.streamdeck-planets.mercury",
             "Icon": "imgs/icons/Mercury",

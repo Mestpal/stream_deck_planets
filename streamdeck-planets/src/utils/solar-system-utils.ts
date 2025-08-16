@@ -1,9 +1,11 @@
-import streamDeck, { JsonValue, KeyAction } from "@elgato/streamdeck";
+import streamDeck, { KeyAction, DialAction, JsonObject } from "@elgato/streamdeck";
 
 import config from "../config/settings";
+import {SolarSystemApiData, SolarObjectSettings, getSolarSystemObjectType, BodiesType, OptionSelectorType} from './types'
 import { type SettingsObject } from "../config/settings";
 import { TextScroller } from "./scroller";
 
+const base_url = 'https://api.le-systeme-solaire.net/rest.php/bodies';
 const defaultSetting = config.getDefaultSettings()[0];
 const maximunLength = 8;
 const emptyString = Array(maximunLength).fill(' ').join('')
@@ -48,23 +50,56 @@ function showData(magnitude: string, value: number | string, unit: string, actio
 }
 
 /**
+ * Function to get the object or objects info from the API
+ * @param name - name of the object
+ * @param filter - boolean to apply the search url
+ * @returns - object of type SolarSystemApiData
+ */
+async function searchObject(name:string | undefined, filter: boolean): Promise<object> {
+	if (!name) {return {} }
+	
+	let url = `${base_url}/${name}`
+
+	if (filter) {
+		url = `${base_url}?filter[]=id,cs,${name}`
+	}
+	
+	const response = await fetch(url);
+	return (await response.json()) as SolarSystemApiData;
+}
+
+/**
  * Fetches and displays information about a Solar System object on the Stream Deck.
  * @param action - The Stream Deck key action instance.
  * @param settings - The settings for the Solar System object.
+ * @param search - (Optional) Possible Solar system object to find
  * @returns A promise that resolves when the operation is complete.
  */
-async function getSolarSystemObject(action: KeyAction, settings: SolarObjectSettings): Promise<getSolarSystemObjectType | object | undefined> {
-	try {
+async function getSolarSystemObject(action: DialAction | KeyAction, settings: SolarObjectSettings, search: string| undefined = undefined): Promise<getSolarSystemObjectType | object | undefined> {
+	try {		
+		let showDataInfo = {}
+
 		if (typeof settings.count !== "number") {
 			settings.count = 0;
 		}
 
-		if (!settings.data?.englishName) {
-			const response = await fetch(`https://api.le-systeme-solaire.net/rest.php/bodies/${settings.name}`);
-			settings.data = (await response.json()) as SolarSystemApiData;
-			await action.setSettings(settings);
-			return {};
-		} else {
+		if (search) {
+			/** Response from the solar system API containing an array of celestial bodies */
+			const options = await searchObject(settings.search_object, true) as BodiesType
+			settings.search_results = options.bodies
+
+			if (options?.bodies.length) {
+				const selectorOptions = options.bodies.map((option: OptionSelectorType) => {
+					return {
+						label: option.englishName,
+						value: option.englishName
+					}})
+
+				settings.options = selectorOptions
+			}
+		} else if (!settings.data?.englishName) {
+			settings.data = await searchObject(settings.name, false) as SolarSystemApiData
+		} else {		
 			let currentSetting = defaultSetting;
 
 			if (settings.objectSettings) {
@@ -78,14 +113,18 @@ async function getSolarSystemObject(action: KeyAction, settings: SolarObjectSett
 			}
 
 			settings.count = pressButtonCountManagement(settings);
-			await action.setSettings(settings);
+			await action.setSettings(settings as JsonObject);
 
-			return {
+			showDataInfo = {
 				apiLabel: currentSetting.label,
 				apiValue: settings.data[currentSetting.value as keyof SolarSystemApiData], 
 				apiUnit: currentSetting.unit || ""
 			}
 		}
+
+		await action.setSettings(settings as JsonObject);
+		
+		return showDataInfo
 	} catch (e) {
 		streamDeck.logger.error("Failed to fetch Solar System object info", e);
 		return undefined;
@@ -105,72 +144,6 @@ function pressButtonCountManagement(settings: SolarObjectSettings): number {
 	}
 
 	return count;
-}
-
-/**
- * Type for the Solar System object data returned from the API.
- */
-type SolarSystemApiData = {
-	/**
-	 * The English name of the Solar System object.
-	 */
-	englishName: string;
-	/**
-	 * The gravity of the Solar System object.
-	 */
-	gravity: number;
-	/**
-	 * The escape velocity of the Solar System object.
-	 */
-	escape: number;
-	/**
-	 * The type of the Solar System object.
-	 */
-	bodyType: string;
-};
-
-/**
- * Settings specific to the Solar system.
- */
-type SolarObjectSettings = {
-	/**
-	 * The count of Object-related items.
-	 */
-	count: number;
-	/**
-	 * The data associated with Object.
-	 */
-	data: SolarSystemApiData;
-	/**
-	 * The name of the Object
-	 */
-	name: string;
-	/**
-	 * Settings for checklist
-	 */
-	objectSettings?: JsonValue[];
-	/**
-	 * Settings for checklist
-	 */
-	iconSettings?: string;
-};
-
-/**
- * Type representing the return value from getSolarSystemObject function.
- */
-type getSolarSystemObjectType = {
-	/**
-	 * The label for the API data point.
-	 */
-	apiLabel: string,
-	/**
-	 * The value from the Solar System API data.
-	 */
-	apiValue: keyof SolarSystemApiData,
-	/**
-	 * The unit of measurement for the value.
-	 */
-	apiUnit: string
 }
 
 export { getSolarSystemObject, getSolarSystemObjectType, pressButtonCountManagement, SolarObjectSettings, showData };

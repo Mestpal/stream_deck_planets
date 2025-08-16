@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+	<head lang="en">
+		<meta charset="utf-8" />
+		<script src="sdpi-components.js"></script>
+	</head>
+
+	<body>
+		<script>
+			const { streamDeckClient } = SDPIComponents;
+
+			streamDeckClient.getSettings()
+				.then(async (res) => {
+					let newSettings = {
+						objectSettings: ['gravity', 'density', 'meanRadius'],
+						init: true
+					}
+					
+					if (!res.settings?.init) {
+						streamDeckClient.setSettings(newSettings)
+					} else {
+						newSettings = {
+							...newSettings,
+							...res.settings
+						}
+					}
+
+					await streamDeckClient.setSettings(newSettings)
+					document.querySelector('[setting="objectSettings"]').value = newSettings.objectSettings
+				})
+
+				async function searchObject() {
+					const { settings } = await streamDeckClient.getSettings()
+					settings.launch_search = true
+					delete settings.data
+					delete settings.options
+					delete settings.name
+					delete settings.search_results
+					delete settings.selectedObject
+					console.log('UI settings', settings)
+					await streamDeckClient.setSettings(settings)
+				}
+		</script>
+		<sdpi-item label="Search Field">
+			<sdpi-textfield
+				setting="search_object"
+				placeholder="Object to search"
+				required>
+			</sdpi-textfield>
+			<sdpi-button onclick="searchObject()">
+				Search
+			</sdpi-button>
+		</sdpi-item>
+		<sdpi-item label="Select">
+			<sdpi-select
+				datasource="getObjectOptions"
+				hot-reload
+				loading="loading posible candidates"
+				placeholder="Select an option"
+				setting="selectedObject" 
+			>
+			</sdpi-select>
+		</sdpi-item>	
+
+		<sdpi-item label="Settings to Show">
+			<sdpi-checkbox-list 
+				columns="2"
+				datasource="getSettings"
+				hot-reload="true"
+				setting="objectSettings" />
+		</sdpi-item>
+	</body>
+</html>
+
+<script>
+
+</script>
+

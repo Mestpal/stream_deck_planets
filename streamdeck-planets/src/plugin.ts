@@ -8,6 +8,8 @@ import { NeptuneInfo } from "./actions/neptune-info";
 import { SaturnInfo } from "./actions/saturn-info";
 import { UranusInfo } from "./actions/uranus-info";
 import { VenusInfo } from "./actions/venus-info";
+import { CustomInfo } from "./actions/custom-info";
+
 
 // We can enable "trace" logging so that all messages between the Stream Deck, and the plugin are recorded. When storing sensitive information
 streamDeck.logger.setLevel(LogLevel.TRACE);
@@ -21,6 +23,7 @@ streamDeck.actions.registerAction(new JupiterInfo());
 streamDeck.actions.registerAction(new SaturnInfo());
 streamDeck.actions.registerAction(new UranusInfo());
 streamDeck.actions.registerAction(new NeptuneInfo());
+streamDeck.actions.registerAction(new CustomInfo());
 
 // Finally, connect to the Stream Deck.
 streamDeck.connect();
