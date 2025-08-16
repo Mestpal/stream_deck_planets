@@ -3,9 +3,7 @@ import streamDeck, { action, KeyDownEvent, WillAppearEvent, DidReceiveSettingsEv
 import { ObjectInfo } from "./object-info";
 import { SolarObjectSettings, getSolarSystemObjectType} from "../utils/types";
 import { getSolarSystemObject } from "../utils/solar-system-utils";
-import { TextScroller } from "../utils/scroller";
 
-const scroller = new TextScroller('', 8);
 let solarObjectName: string | undefined = undefined
 
 /**
@@ -57,7 +55,8 @@ export class CustomInfo extends ObjectInfo {
 	 * @param ev The event payload for the key down event.
 	 */
 	public override async onKeyDown(ev: KeyDownEvent<SolarObjectSettings>): Promise<void> {
-		await this.getInfoAction(ev, ev.payload.settings.name, scroller);
+		this.resetShowData()
+		await this.getInfoAction(ev, ev.payload.settings.name);
 	}
 
 	/**

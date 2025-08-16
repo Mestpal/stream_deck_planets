@@ -5,7 +5,7 @@ import streamDeck, {
 	KeyAction,
 	KeyDownEvent,
 	SingletonAction,
-	WillAppearEvent,
+	WillAppearEvent
 } from "@elgato/streamdeck";
 
 import config from "../config/settings";
@@ -20,6 +20,29 @@ import { TextScroller } from "../utils/scroller";
 @action({ UUID: "com.manuel-estvez-palencia.streamdeck-planets.object" })
 export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	/**
+	 * max number of chars to show in the screen
+	 */
+	protected maxWindowsSize: number;
+	/**
+	 * Scroller entity for the ObjectInfo class 
+	 */
+	protected scroller: TextScroller;
+	/**
+	 * Timeoout to show correctly data in showdata
+	 */
+	protected showDataTimer: NodeJS.Timeout | undefined
+
+	/**
+	 * Constructor of the class
+	 */
+	constructor() {
+		super()
+		this.maxWindowsSize = 8
+		this.scroller = new TextScroller('', this.maxWindowsSize);
+		this.showDataTimer = undefined
+	}
+
+	/**
 	 * Handles when a setting changes in the UI
 	 * @param ev The event received when settings in UI change
 	 */
@@ -33,14 +56,24 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	 * @param name The name of the solar object to search
 	 * @param scroller scroller entity
 	 */
-	protected async getInfoAction(ev: KeyDownEvent<SolarObjectSettings>, name: string, scroller: TextScroller): Promise<void> {
+	protected async getInfoAction(ev: KeyDownEvent<SolarObjectSettings>, name: string): Promise<void> {
 		const { settings } = ev.payload;
 		settings.name = name;
 
 		const result = await getSolarSystemObject(ev.action, settings) as getSolarSystemObjectType;
 
 		if (result?.apiLabel) {
-			showData(result.apiLabel, result.apiValue, result.apiUnit, ev.action, scroller);
+			this.showDataTimer = showData(result.apiLabel, result.apiValue, result.apiUnit, ev.action, this.scroller);
+		}
+	}
+
+	/**
+	 * Function to clear timeout created on showData
+	 */
+	protected resetShowData():void {
+		if (this.showDataTimer) {
+			clearTimeout(this.showDataTimer);
+			this.scroller.stopScroll()
 		}
 	}
 

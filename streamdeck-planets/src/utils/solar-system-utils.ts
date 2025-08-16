@@ -19,8 +19,9 @@ const waitingTime = 300;
  * @param unit - The unit to display after the delay.
  * @param action - The Stream Deck key action instance.
  * @param scroller - TextScroller object
+ * @returns - timer
  */
-function showData(magnitude: string, value: number | string, unit: string, action: KeyAction, scroller: TextScroller): void {
+function showData(magnitude: string, value: number | string, unit: string, action: KeyAction, scroller: TextScroller): NodeJS.Timeout {
 	scroller.stopScroll()
 
 	if (magnitude.length <= maximunLength) {		
@@ -31,9 +32,10 @@ function showData(magnitude: string, value: number | string, unit: string, actio
 
 	scroller.startScroll(waitingTime, action)
 
-	setTimeout(() => {
+	return setTimeout(() => {
 		scroller.stopScroll()
 		action.setTitle(' ')
+
 		if (magnitude === 'Name') {
 			scroller.text = `${value}`
 		} else {
@@ -46,7 +48,6 @@ function showData(magnitude: string, value: number | string, unit: string, actio
 			action.setTitle(scroller.text)
 		}
 	}, waitingTime * scroller.text.length);
-
 }
 
 /**
