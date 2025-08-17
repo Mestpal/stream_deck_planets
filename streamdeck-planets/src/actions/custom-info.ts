@@ -2,7 +2,7 @@ import streamDeck, { action, KeyDownEvent, WillAppearEvent, DidReceiveSettingsEv
 
 import { ObjectInfo } from "./object-info";
 import { SolarObjectSettings, getSolarSystemObjectType} from "../utils/types";
-import { getSolarSystemObject } from "../utils/solar-system-utils";
+import { getSolarSystemObject, showData } from "../utils/solar-system-utils";
 
 let solarObjectName: string | undefined = undefined
 
@@ -18,7 +18,6 @@ export class CustomInfo extends ObjectInfo {
 	 */
 	public override async onDidReceiveSettings(ev: DidReceiveSettingsEvent): Promise<void> {
 		let { settings } = ev.payload
-		console.log('onDidReceiveSettings', settings);
 
 		if (settings.launch_search) {
 			await getSolarSystemObject(ev.action, settings as SolarObjectSettings, settings.search_object as string) as getSolarSystemObjectType;
@@ -32,7 +31,7 @@ export class CustomInfo extends ObjectInfo {
 			delete settings.launch_search
 		}
 
-		if (settings.selectedObject && !settings.data && Array.isArray(settings?.search_results)) {
+		if (settings.selectedObject && Array.isArray(settings?.search_results)) {
 			const name = settings.selectedObject
 
 			settings.data = settings?.search_results?.find( body  => 
@@ -41,11 +40,14 @@ export class CustomInfo extends ObjectInfo {
 			)
 			
 			solarObjectName = name as string
-			this.setObjectPluginInfo(solarObjectName as string)
-			ev.action.setTitle(solarObjectName)
+			this.setObjectPluginInfo(solarObjectName)
+
+			this.resetShowData()
+			this.scroller.text = solarObjectName
+			showData('Name', solarObjectName, '', ev.action, this.scroller)	
 		}
 		
-		ev.action.setSettings(settings)
+		await ev.action.setSettings(settings)		
 		this.updateIconSetting(ev.action, settings.iconSettings as string);
 	}
 
@@ -73,8 +75,8 @@ export class CustomInfo extends ObjectInfo {
 	 * @param ev The event payload for the will appear event.
 	 */
 	public override onWillAppear(ev: WillAppearEvent<SolarObjectSettings>): void {
-		if (ev.payload.settings.search_object) {
-			this.setDefaultSettings(ev, ev.payload.settings.search_object);
+		if (solarObjectName) {
+			this.setDefaultSettings(ev, solarObjectName);
 		}
 	}
 }

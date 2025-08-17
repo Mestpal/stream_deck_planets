@@ -21,7 +21,7 @@ const waitingTime = 300;
  * @param scroller - TextScroller object
  * @returns - timer
  */
-function showData(magnitude: string, value: number | string, unit: string, action: KeyAction, scroller: TextScroller): NodeJS.Timeout {
+function showData(magnitude: string, value: number | string, unit: string, action:DialAction | KeyAction, scroller: TextScroller): NodeJS.Timeout {
 	scroller.stopScroll()
 
 	if (magnitude.length <= maximunLength) {		
@@ -38,6 +38,9 @@ function showData(magnitude: string, value: number | string, unit: string, actio
 
 		if (magnitude === 'Name') {
 			scroller.text = `${value}`
+			if (scroller.text.length > maximunLength) {
+				scroller.text += emptyString
+			}
 		} else {
 			scroller.text = `${emptyString}${value}${unit}${emptyString}${magnitude}`
 		}

@@ -67,6 +67,10 @@ type SolarObjectSettings = {
      *  data of the objects related to the options
      */
     search_results?: OptionSelectorType[];
+	/**
+	 * Solar object selected in t he selector
+	 */
+	selectedObject?: string
 };
 
 /**

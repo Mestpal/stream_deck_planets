@@ -1,4 +1,4 @@
-import { KeyAction } from "@elgato/streamdeck";
+import { DialAction, KeyAction } from "@elgato/streamdeck";
 
 /**
  * Class to create an object that manage the scrolling of a text
@@ -36,7 +36,7 @@ export class TextScroller {
 	 * @param speedMs speed of the scroll in ms
 	 * @param action streamdeck Keyaction
 	 */
-	public startScroll(speedMs: number = 200, action: KeyAction): void {        
+	public startScroll(speedMs: number = 200, action: DialAction| KeyAction): void {        
 		if (this.text.length <= this.windowSize) {
 			action.setTitle(this.text)
 		} else {

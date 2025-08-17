@@ -71,9 +71,9 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	 * Function to clear timeout created on showData
 	 */
 	protected resetShowData():void {
+		this.scroller.stopScroll()
 		if (this.showDataTimer) {
 			clearTimeout(this.showDataTimer);
-			this.scroller.stopScroll()
 		}
 	}
 
