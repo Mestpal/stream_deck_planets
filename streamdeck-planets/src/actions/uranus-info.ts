@@ -12,11 +12,12 @@ const planet = "Uranus";
 @action({ UUID: "com.manuel-estvez-palencia.streamdeck-planets.uranus" })
 export class UranusInfo extends ObjectInfo {
 	/**
-	 * Handles the key down event for the Uranus action.
-	 * Sets the name to "Uranus" and fetches Uranus data.
+	 * Handles the key down event for the Earth action.
+	 * Sets the name to "Earth" and fetches Earth data.
 	 * @param ev The event payload for the key down event.
 	 */
 	public override async onKeyDown(ev: KeyDownEvent<SolarObjectSettings>): Promise<void> {
+		this.resetShowData()
 		await this.getInfoAction(ev, planet);
 	}
 

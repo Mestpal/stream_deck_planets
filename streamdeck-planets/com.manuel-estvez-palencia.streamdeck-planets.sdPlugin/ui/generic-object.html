@@ -27,17 +27,40 @@
 
 					await streamDeckClient.setSettings(newSettings)
 					document.querySelector('[setting="objectSettings"]').value = newSettings.objectSettings
-					
 				})
+
+				async function searchObject() {
+					const { settings } = await streamDeckClient.getSettings()
+					settings.launch_search = true
+					delete settings.data
+					delete settings.options
+					delete settings.name
+					delete settings.search_results
+					delete settings.selectedObject
+					console.log('UI settings', settings)
+					await streamDeckClient.setSettings(settings)
+				}
 		</script>
-		<sdpi-item label="Icon">
-			<sdpi-select
-				hot-reload="true"
-				placeholder="Please choose the type of icon you want"
-				datasource="getIconSettings"
-				setting="iconSettings"
-			/>
+		<sdpi-item label="Search Field">
+			<sdpi-textfield
+				setting="search_object"
+				placeholder="Object to search"
+				required>
+			</sdpi-textfield>
+			<sdpi-button onclick="searchObject()">
+				Search
+			</sdpi-button>
 		</sdpi-item>
+		<sdpi-item label="Select">
+			<sdpi-select
+				datasource="getObjectOptions"
+				hot-reload
+				loading="loading posible candidates"
+				placeholder="Select an option"
+				setting="selectedObject" 
+			>
+			</sdpi-select>
+		</sdpi-item>	
 
 		<sdpi-item label="Settings to Show">
 			<sdpi-checkbox-list 
@@ -48,4 +71,8 @@
 		</sdpi-item>
 	</body>
 </html>
+
+<script>
+
+</script>
 

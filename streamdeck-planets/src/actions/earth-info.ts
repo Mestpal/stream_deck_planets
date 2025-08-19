@@ -17,19 +17,19 @@ export class EarthInfo extends ObjectInfo {
 	 * @param ev The event payload for the key down event.
 	 */
 	public override async onKeyDown(ev: KeyDownEvent<SolarObjectSettings>): Promise<void> {
+		this.resetShowData()
 		await this.getInfoAction(ev, planet);
 	}
 
 	/**
 	 * Handles the send to plugin event for the Earth action.
-	 * Sends the checklist settings.
 	 */
 	public override onSendToPlugin(): void {
 		this.setObjectPluginInfo(planet);
 	}
 
 	/**
-	 * Sets the configuration when the plugin is shown
+	 * Sets the configuration when the plugin is shown in the device
 	 * @param ev The event payload for the will appear event.
 	 */
 	public override onWillAppear(ev: WillAppearEvent<SolarObjectSettings>): void {
