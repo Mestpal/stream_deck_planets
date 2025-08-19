@@ -91,12 +91,27 @@ type getSolarSystemObjectType = {
 	apiUnit: string
 }
 
+/**
+ * All the data for the objects obtained in the search
+ */
 type BodiesType = {
+	/**
+	 * Array with all the possible options
+	 */
 	bodies:  Array<OptionSelectorType>
 }
 
+/**
+ * Options in the search object selector
+ */
 type OptionSelectorType = {
+	/**
+	 * Name of the object
+	 */
 	englishName: string; 
+	/**
+	 * id of the object
+	 */
 	id: string
 }
 

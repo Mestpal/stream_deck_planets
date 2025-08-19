@@ -1,10 +1,12 @@
 import streamDeck, { action, KeyDownEvent, WillAppearEvent, DidReceiveSettingsEvent} from "@elgato/streamdeck";
 
 import { ObjectInfo } from "./object-info";
-import { SolarObjectSettings, getSolarSystemObjectType} from "../utils/types";
+import { SolarObjectSettings, getSolarSystemObjectType, SolarSystemApiData} from "../utils/types";
 import { getSolarSystemObject, showData } from "../utils/solar-system-utils";
+import config from "../config/settings";
+// import type { IconSettingsObject  } from "../config/settings";
 
-let solarObjectName: string | undefined = undefined
+let solarObjectType: string = ''
 
 /**
  * Stream Deck action for displaying information about Custom Solar System object.
@@ -33,22 +35,40 @@ export class CustomInfo extends ObjectInfo {
 
 		if (settings.selectedObject && Array.isArray(settings?.search_results)) {
 			const name = settings.selectedObject
+			let data = settings.data as SolarSystemApiData
 
-			settings.data = settings?.search_results?.find( body  => 
-				typeof body === 'object' && body !== null && 'englishName' in body 
-				&& body.englishName === name
-			)
+			console.log('RECEIVE', name, this.previousObject, settings);
 			
-			solarObjectName = name as string
-			this.setObjectPluginInfo(solarObjectName)
+			if (!this.previousObject || this.previousObject !== name) {
+				data = settings?.search_results?.find( body  => 
+					typeof body === 'object' && body !== null && 'englishName' in body 
+					&& body.englishName === name
+				) as SolarSystemApiData
+			
+				this.previousObject = name as string
+				if (data && data?.bodyType) {
+					solarObjectType = data?.bodyType as string
+				}
 
-			this.resetShowData()
-			this.scroller.text = solarObjectName
-			showData('Name', solarObjectName, '', ev.action, this.scroller)	
+				this.setObjectPluginInfo(this.previousObject, solarObjectType)
+
+				this.resetShowData()
+				this.scroller.text = this.previousObject
+				showData('Name', this.previousObject, '', ev.action, this.scroller)	
+
+				settings.iconSettings = config.getIconSettings(this.previousObject, solarObjectType)
+				// const imageInfo = settings.iconSettings[0] as IconSettingsObject
+				// this.imageUrl = imageInfo.value
+			}
+		}
+
+		if (settings.iconSettings) {
+			console.log('SETTINGSSSSSSSSS',settings.iconSettings );
+			this.updateIconSetting(ev.action, settings.iconSettings as string);
 		}
 		
-		await ev.action.setSettings(settings)		
-		this.updateIconSetting(ev.action, settings.iconSettings as string);
+		
+		await ev.action.setSettings(settings)
 	}
 
 	/**
@@ -65,8 +85,8 @@ export class CustomInfo extends ObjectInfo {
 	 * Handles the send to plugin event for the Custom Solar System object action.
 	 */
 	public override onSendToPlugin(): void {		
-		if (solarObjectName) {
-			this.setObjectPluginInfo(solarObjectName);
+		if (this.previousObject) {
+			this.setObjectPluginInfo(this.previousObject, solarObjectType);
 		}
 	}
 
@@ -75,8 +95,8 @@ export class CustomInfo extends ObjectInfo {
 	 * @param ev The event payload for the will appear event.
 	 */
 	public override onWillAppear(ev: WillAppearEvent<SolarObjectSettings>): void {
-		if (solarObjectName) {
-			this.setDefaultSettings(ev, solarObjectName);
+		if (this.previousObject) {
+			this.setDefaultSettings(ev, this.previousObject);
 		}
 	}
 }

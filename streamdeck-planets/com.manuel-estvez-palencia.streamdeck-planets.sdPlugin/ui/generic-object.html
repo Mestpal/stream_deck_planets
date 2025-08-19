@@ -37,7 +37,6 @@
 					delete settings.name
 					delete settings.search_results
 					delete settings.selectedObject
-					console.log('UI settings', settings)
 					await streamDeckClient.setSettings(settings)
 				}
 		</script>
@@ -51,6 +50,7 @@
 				Search
 			</sdpi-button>
 		</sdpi-item>
+
 		<sdpi-item label="Select">
 			<sdpi-select
 				datasource="getObjectOptions"
@@ -60,7 +60,16 @@
 				setting="selectedObject" 
 			>
 			</sdpi-select>
-		</sdpi-item>	
+		</sdpi-item>
+
+		<sdpi-item label="Icon">
+			<sdpi-select
+				hot-reload="true"
+				placeholder="Please choose the type of icon you want"
+				datasource="getIconSettings"
+				setting="iconSettings"
+			/>
+		</sdpi-item>
 
 		<sdpi-item label="Settings to Show">
 			<sdpi-checkbox-list 

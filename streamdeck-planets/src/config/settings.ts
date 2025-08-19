@@ -14,21 +14,30 @@ const settings = [
 	{ label: "Polar Radius", checked: false, value: "polarRadius", unit: "Km" },
 ] as SettingsObject[];
 
+const personalizedObjects = ["Mercury", "Venus","Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"];
+
 const getDefaultSettings = (): SettingsObject[] => settings.filter((setting) => setting?.checked);
 
-const getIconSettings = (name: string): IconSettingsObject[] => {
+const getIconSettings = (name: string, bodyType: string | undefined = undefined): IconSettingsObject[] => {
 	let iconOptions = [
-		{ label: "Drawn", value: "imgs/actions/counter/icon" },
-		{ label: "Planet", value: "imgs/actions/counter/key" },
+		{ label: "Drawn", value: `imgs/actions/planets/default1` },
+		{ label: "Planet", value: `imgs/actions/planets/defaultR` },
 	];
 
-	if (name) {
+	if (personalizedObjects.includes(name)) {
 		iconOptions = [
 			{ label: "Drawn", value: `imgs/actions/planets/${name}1` },
 			{ label: "Planet", value: `imgs/actions/planets/${name}R` },
 		];
+	} else if (bodyType) {
+		iconOptions = [
+			{ label: "Drawn", value: `imgs/actions/types/${bodyType}1` },
+			{ label: "Planet", value: `imgs/actions/types/Asteroid1` },
+		]
 	}
 
+	console.log('ICONS', iconOptions);
+	
 	return iconOptions;
 };
 
@@ -62,4 +71,4 @@ type IconSettingsObject = {
 };
 
 export default { settings, getDefaultSettings, getIconSettings };
-export type { SettingsObject };
+export type { SettingsObject, IconSettingsObject };

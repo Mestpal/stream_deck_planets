@@ -24,6 +24,10 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	 */
 	protected maxWindowsSize: number;
 	/**
+	 * Previos Solar Object
+	 */
+	protected previousObject: string | undefined;
+	/**
 	 * Scroller entity for the ObjectInfo class 
 	 */
 	protected scroller: TextScroller;
@@ -39,7 +43,8 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 		super()
 		this.maxWindowsSize = 8
 		this.scroller = new TextScroller('', this.maxWindowsSize);
-		this.showDataTimer = undefined
+		this.showDataTimer = undefined;
+		this.previousObject = undefined;
 	}
 
 	/**
@@ -90,11 +95,12 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	/**
 	 * Function to sent the icon option via property inspector to UI.
 	 * @param name name of the space object
+	 * @param bodyType Solar system body type
 	 */
-	protected sentIconSettings(name: string): void {
+	protected sentIconSettings(name: string, bodyType: string |undefined = undefined ): void {
 		streamDeck.ui.current?.sendToPropertyInspector({
 			event: "getIconSettings",
-			items: config.getIconSettings(name),
+			items: config.getIconSettings(name, bodyType),
 		});
 	}
 
@@ -112,10 +118,11 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	/**
 	 * Function to sent all the setings to the plugin
 	 * @param name Name of the object we want its settings
+	 * @param bodyType Solar system body type
 	 */
-	protected setObjectPluginInfo(name: string): void {
+	protected setObjectPluginInfo(name: string, bodyType: string | undefined = undefined ): void {
 		this.sentChecklistSettings();
-		this.sentIconSettings(name);
+		this.sentIconSettings(name, bodyType);
 	}
  
 	/**
