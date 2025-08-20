@@ -1,4 +1,4 @@
-import streamDeck, { LogLevel } from "@elgato/streamdeck";
+import streamDeck from "@elgato/streamdeck";
 
 import { EarthInfo } from "./actions/earth-info";
 import { JupiterInfo } from "./actions/jupiter-info";
@@ -9,10 +9,6 @@ import { SaturnInfo } from "./actions/saturn-info";
 import { UranusInfo } from "./actions/uranus-info";
 import { VenusInfo } from "./actions/venus-info";
 import { CustomInfo } from "./actions/custom-info";
-
-
-// We can enable "trace" logging so that all messages between the Stream Deck, and the plugin are recorded. When storing sensitive information
-streamDeck.logger.setLevel(LogLevel.TRACE);
 
 // Register the increment action.
 streamDeck.actions.registerAction(new MercuryInfo());

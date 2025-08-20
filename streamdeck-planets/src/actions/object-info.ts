@@ -59,7 +59,6 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	 * Function to get the solar sytem object
 	 * @param ev The event payload for the key down event.
 	 * @param name The name of the solar object to search
-	 * @param scroller scroller entity
 	 */
 	protected async getInfoAction(ev: KeyDownEvent<SolarObjectSettings>, name: string): Promise<void> {
 		const { settings } = ev.payload;

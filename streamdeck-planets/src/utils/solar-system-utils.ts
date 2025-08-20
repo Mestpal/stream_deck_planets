@@ -63,11 +63,10 @@ async function searchObject(name:string | undefined, filter: boolean): Promise<o
 	if (!name) {return {} }
 	
 	let url = `${base_url}/${name}`
-
-	if (filter) {
-		url = `${base_url}?filter[]=id,cs,${name}`
-	}
 	
+	if (filter) {
+		url = `${base_url}?filter[]=englishName,cs,${name}`
+	}	
 	const response = await fetch(url);
 	return (await response.json()) as SolarSystemApiData;
 }
@@ -79,7 +78,7 @@ async function searchObject(name:string | undefined, filter: boolean): Promise<o
  * @param search - (Optional) Possible Solar system object to find
  * @returns A promise that resolves when the operation is complete.
  */
-async function getSolarSystemObject(action: DialAction | KeyAction, settings: SolarObjectSettings, search: string| undefined = undefined): Promise<getSolarSystemObjectType | object | undefined> {
+async function getSolarSystemObject(action: DialAction | KeyAction, settings: SolarObjectSettings, search: string| undefined = undefined): Promise<getSolarSystemObjectType | object | undefined> {	
 	try {		
 		let showDataInfo = {}
 
@@ -102,8 +101,8 @@ async function getSolarSystemObject(action: DialAction | KeyAction, settings: So
 				settings.options = selectorOptions
 			}
 		} else if (!settings.data?.englishName) {
-			settings.data = await searchObject(settings.name, false) as SolarSystemApiData
-		} else {		
+			settings.data = await searchObject(settings.name || settings.selectedObject , false) as SolarSystemApiData
+		} else {
 			let currentSetting = defaultSetting;
 
 			if (settings.objectSettings) {
@@ -117,7 +116,6 @@ async function getSolarSystemObject(action: DialAction | KeyAction, settings: So
 			}
 
 			settings.count = pressButtonCountManagement(settings);
-			await action.setSettings(settings as JsonObject);
 
 			showDataInfo = {
 				apiLabel: currentSetting.label,
@@ -127,7 +125,6 @@ async function getSolarSystemObject(action: DialAction | KeyAction, settings: So
 		}
 
 		await action.setSettings(settings as JsonObject);
-		
 		return showDataInfo
 	} catch (e) {
 		streamDeck.logger.error("Failed to fetch Solar System object info", e);

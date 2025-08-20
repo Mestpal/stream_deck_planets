@@ -4,7 +4,6 @@ import { ObjectInfo } from "./object-info";
 import { SolarObjectSettings, getSolarSystemObjectType, SolarSystemApiData} from "../utils/types";
 import { getSolarSystemObject, showData } from "../utils/solar-system-utils";
 import config from "../config/settings";
-// import type { IconSettingsObject  } from "../config/settings";
 
 let solarObjectType: string = ''
 
@@ -36,8 +35,6 @@ export class CustomInfo extends ObjectInfo {
 		if (settings.selectedObject && Array.isArray(settings?.search_results)) {
 			const name = settings.selectedObject
 			let data = settings.data as SolarSystemApiData
-
-			console.log('RECEIVE', name, this.previousObject, settings);
 			
 			if (!this.previousObject || this.previousObject !== name) {
 				data = settings?.search_results?.find( body  => 
@@ -50,25 +47,24 @@ export class CustomInfo extends ObjectInfo {
 					solarObjectType = data?.bodyType as string
 				}
 
-				this.setObjectPluginInfo(this.previousObject, solarObjectType)
-
+				this.setObjectPluginInfo(name as string, solarObjectType)
 				this.resetShowData()
-				this.scroller.text = this.previousObject
-				showData('Name', this.previousObject, '', ev.action, this.scroller)	
+				
+				const imageInfo = config.getIconSettings(name as string, solarObjectType)
+				
+				settings.data = {...data}
+				settings.iconSettings = imageInfo[0].value
+				this.scroller.text = name as string
 
-				settings.iconSettings = config.getIconSettings(this.previousObject, solarObjectType)
-				// const imageInfo = settings.iconSettings[0] as IconSettingsObject
-				// this.imageUrl = imageInfo.value
+				showData('Name', name as string, '', ev.action, this.scroller)	
 			}
 		}
 
 		if (settings.iconSettings) {
-			console.log('SETTINGSSSSSSSSS',settings.iconSettings );
 			this.updateIconSetting(ev.action, settings.iconSettings as string);
 		}
-		
-		
-		await ev.action.setSettings(settings)
+
+		await ev.action.setSettings(settings)		
 	}
 
 	/**
@@ -78,6 +74,11 @@ export class CustomInfo extends ObjectInfo {
 	 */
 	public override async onKeyDown(ev: KeyDownEvent<SolarObjectSettings>): Promise<void> {
 		this.resetShowData()
+
+		if (ev.payload.settings.iconSettings) {
+			this.updateIconSetting(ev.action, ev.payload.settings.iconSettings)
+		}
+
 		await this.getInfoAction(ev, ev.payload.settings.name);
 	}
 
@@ -95,8 +96,11 @@ export class CustomInfo extends ObjectInfo {
 	 * @param ev The event payload for the will appear event.
 	 */
 	public override onWillAppear(ev: WillAppearEvent<SolarObjectSettings>): void {
-		if (this.previousObject) {
-			this.setDefaultSettings(ev, this.previousObject);
+		if (ev.payload.settings.selectedObject) {
+			const objectName = ev.payload.settings.selectedObject as string
+			this.setDefaultSettings(ev, objectName);
+			this.scroller.text = objectName
+			this.scroller.startScroll(300, ev.action)
 		}
 	}
 }
