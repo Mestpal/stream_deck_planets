@@ -1,5 +1,6 @@
 import streamDeck from "@elgato/streamdeck";
 
+import { CustomInfo } from "./actions/custom-info";
 import { EarthInfo } from "./actions/earth-info";
 import { JupiterInfo } from "./actions/jupiter-info";
 import { MarsInfo } from "./actions/mars-info";
@@ -8,7 +9,6 @@ import { NeptuneInfo } from "./actions/neptune-info";
 import { SaturnInfo } from "./actions/saturn-info";
 import { UranusInfo } from "./actions/uranus-info";
 import { VenusInfo } from "./actions/venus-info";
-import { CustomInfo } from "./actions/custom-info";
 
 // Register the increment action.
 streamDeck.actions.registerAction(new MercuryInfo());

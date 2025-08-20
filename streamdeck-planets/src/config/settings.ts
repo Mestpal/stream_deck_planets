@@ -1,6 +1,6 @@
 /* eslint-disable jsdoc/require-jsdoc */
 const settings = [
-	{ label: "Name", checked: true, value: "englishName", avoid: true},
+	{ label: "Name", checked: true, value: "englishName", avoid: true },
 	{ label: "Gravity", checked: true, value: "gravity", unit: "m/s²" },
 	{ label: "Escape Speed", checked: false, value: "escape", unit: "m/s" },
 	{ label: "Body type", checked: false, value: "bodyType" },
@@ -14,7 +14,7 @@ const settings = [
 	{ label: "Polar Radius", checked: false, value: "polarRadius", unit: "Km" },
 ] as SettingsObject[];
 
-const personalizedObjects = ["Mercury", "Venus","Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"];
+const personalizedObjects = ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"];
 
 const getDefaultSettings = (): SettingsObject[] => settings.filter((setting) => setting?.checked);
 
@@ -33,36 +33,38 @@ const getIconSettings = (name: string, bodyType: string | undefined = undefined)
 		iconOptions = [
 			{ label: "Drawn", value: `imgs/actions/types/${bodyType}1` },
 			{ label: "Planet", value: `imgs/actions/types/Asteroid1` },
-		]
+		];
 	}
 
-	console.log('ICONS', iconOptions);
-	
+	console.log("ICONS", iconOptions);
+
 	return iconOptions;
 };
 
 type SettingsObject =
-	{
-		avoid?: boolean;
-		checked: boolean;
-		initial: boolean;
-		label: string;
-		unit?: undefined;
-		value: string;
-	  } | {
-		avoid?: boolean;
-		initial: boolean;
-		label: string;
-		value: string;
-		checked?: undefined;
-		unit?: undefined;
-	  } | {
-		avoid?: boolean;
-		initial: boolean;
-		label: string;
-		value: string;
-		unit: string;
-		checked?: undefined;
+	| {
+			avoid?: boolean;
+			checked: boolean;
+			initial: boolean;
+			label: string;
+			unit?: undefined;
+			value: string;
+	  }
+	| {
+			avoid?: boolean;
+			initial: boolean;
+			label: string;
+			value: string;
+			checked?: undefined;
+			unit?: undefined;
+	  }
+	| {
+			avoid?: boolean;
+			initial: boolean;
+			label: string;
+			value: string;
+			unit: string;
+			checked?: undefined;
 	  };
 
 type IconSettingsObject = {

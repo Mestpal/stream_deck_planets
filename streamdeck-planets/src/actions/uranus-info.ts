@@ -17,7 +17,7 @@ export class UranusInfo extends ObjectInfo {
 	 * @param ev The event payload for the key down event.
 	 */
 	public override async onKeyDown(ev: KeyDownEvent<SolarObjectSettings>): Promise<void> {
-		this.resetShowData()
+		this.resetShowData();
 		await this.getInfoAction(ev, planet);
 	}
 
