@@ -1,16 +1,21 @@
-import streamDeck, { KeyAction, DialAction, JsonObject } from "@elgato/streamdeck";
+import streamDeck, { DialAction, JsonObject, KeyAction } from "@elgato/streamdeck";
 
 import config from "../config/settings";
-import {SolarSystemApiData, SolarObjectSettings, getSolarSystemObjectType, BodiesType, OptionSelectorType} from './types'
 import { type SettingsObject } from "../config/settings";
 import { TextScroller } from "./scroller";
+import {
+	BodiesType,
+	getSolarSystemObjectType,
+	OptionSelectorType,
+	SolarObjectSettings,
+	SolarSystemApiData,
+} from "./types";
 
-const base_url = 'https://api.le-systeme-solaire.net/rest.php/bodies';
+const base_url = "https://api.le-systeme-solaire.net/rest.php/bodies";
 const defaultSetting = config.getDefaultSettings()[0];
 const maximunLength = 8;
-const emptyString = Array(maximunLength).fill(' ').join('')
+const emptyString = Array(maximunLength).fill(" ").join("");
 const waitingTime = 300;
-
 
 /**
  * Displays a magnitude label on the Stream Deck key, then shows the value and unit after a short delay.
@@ -21,34 +26,40 @@ const waitingTime = 300;
  * @param scroller - TextScroller object
  * @returns - timer
  */
-function showData(magnitude: string, value: number | string, unit: string, action:DialAction | KeyAction, scroller: TextScroller): NodeJS.Timeout {
-	scroller.stopScroll()
+function showData(
+	magnitude: string,
+	value: number | string,
+	unit: string,
+	action: DialAction | KeyAction,
+	scroller: TextScroller,
+): NodeJS.Timeout {
+	scroller.stopScroll();
 
-	if (magnitude.length <= maximunLength) {		
-		scroller.text = magnitude
+	if (magnitude.length <= maximunLength) {
+		scroller.text = magnitude;
 	} else {
-		scroller.text = `${emptyString}${magnitude}`
+		scroller.text = `${emptyString}${magnitude}`;
 	}
 
-	scroller.startScroll(waitingTime, action)
+	scroller.startScroll(waitingTime, action);
 
 	return setTimeout(() => {
-		scroller.stopScroll()
-		action.setTitle(' ')
+		scroller.stopScroll();
+		action.setTitle(" ");
 
-		if (magnitude === 'Name') {
-			scroller.text = `${value}`
+		if (magnitude === "Name") {
+			scroller.text = `${value}`;
 			if (scroller.text.length > maximunLength) {
-				scroller.text += emptyString
+				scroller.text += emptyString;
 			}
 		} else {
-			scroller.text = `${emptyString}${value}${unit}${emptyString}${magnitude}`
+			scroller.text = `${emptyString}${value}${unit}${emptyString}${magnitude}`;
 		}
-		
+
 		if (scroller.text.length > maximunLength) {
 			scroller.startScroll(waitingTime, action);
 		} else {
-			action.setTitle(scroller.text)
+			action.setTitle(scroller.text);
 		}
 	}, waitingTime * scroller.text.length);
 }
@@ -59,15 +70,16 @@ function showData(magnitude: string, value: number | string, unit: string, actio
  * @param filter - boolean to apply the search url
  * @returns - object of type SolarSystemApiData
  */
-async function searchObject(name:string | undefined, filter: boolean): Promise<object> {
-	if (!name) {return {} }
-	
-	let url = `${base_url}/${name}`
+async function searchObject(name: string | undefined, filter: boolean): Promise<object> {
+	if (!name) {
+		return {};
+	}
+
+	let url = `${base_url}/${name}`;
 
 	if (filter) {
-		url = `${base_url}?filter[]=id,cs,${name}`
+		url = `${base_url}?filter[]=englishName,cs,${name}`;
 	}
-	
 	const response = await fetch(url);
 	return (await response.json()) as SolarSystemApiData;
 }
@@ -79,9 +91,13 @@ async function searchObject(name:string | undefined, filter: boolean): Promise<o
  * @param search - (Optional) Possible Solar system object to find
  * @returns A promise that resolves when the operation is complete.
  */
-async function getSolarSystemObject(action: DialAction | KeyAction, settings: SolarObjectSettings, search: string| undefined = undefined): Promise<getSolarSystemObjectType | object | undefined> {
-	try {		
-		let showDataInfo = {}
+async function getSolarSystemObject(
+	action: DialAction | KeyAction,
+	settings: SolarObjectSettings,
+	search: string | undefined = undefined,
+): Promise<getSolarSystemObjectType | object | undefined> {
+	try {
+		let showDataInfo = {};
 
 		if (typeof settings.count !== "number") {
 			settings.count = 0;
@@ -89,21 +105,22 @@ async function getSolarSystemObject(action: DialAction | KeyAction, settings: So
 
 		if (search) {
 			/** Response from the solar system API containing an array of celestial bodies */
-			const options = await searchObject(settings.search_object, true) as BodiesType
-			settings.search_results = options.bodies
+			const options = (await searchObject(settings.search_object, true)) as BodiesType;
+			settings.search_results = options.bodies;
 
 			if (options?.bodies.length) {
 				const selectorOptions = options.bodies.map((option: OptionSelectorType) => {
 					return {
 						label: option.englishName,
-						value: option.englishName
-					}})
+						value: option.englishName,
+					};
+				});
 
-				settings.options = selectorOptions
+				settings.options = selectorOptions;
 			}
 		} else if (!settings.data?.englishName) {
-			settings.data = await searchObject(settings.name, false) as SolarSystemApiData
-		} else {		
+			settings.data = (await searchObject(settings.name || settings.selectedObject, false)) as SolarSystemApiData;
+		} else {
 			let currentSetting = defaultSetting;
 
 			if (settings.objectSettings) {
@@ -117,18 +134,16 @@ async function getSolarSystemObject(action: DialAction | KeyAction, settings: So
 			}
 
 			settings.count = pressButtonCountManagement(settings);
-			await action.setSettings(settings as JsonObject);
 
 			showDataInfo = {
 				apiLabel: currentSetting.label,
-				apiValue: settings.data[currentSetting.value as keyof SolarSystemApiData], 
-				apiUnit: currentSetting.unit || ""
-			}
+				apiValue: settings.data[currentSetting.value as keyof SolarSystemApiData],
+				apiUnit: currentSetting.unit || "",
+			};
 		}
 
 		await action.setSettings(settings as JsonObject);
-		
-		return showDataInfo
+		return showDataInfo;
 	} catch (e) {
 		streamDeck.logger.error("Failed to fetch Solar System object info", e);
 		return undefined;

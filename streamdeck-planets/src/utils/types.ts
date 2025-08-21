@@ -47,30 +47,30 @@ type SolarObjectSettings = {
 	 */
 	iconSettings?: string;
 	/**
-	 * object name to find 
+	 * object name to find
 	 */
 	search_object?: string;
-    /**
-     * options to show in the select of solar objects
-     */
-    options?: { 
-        /**
-         * Option Label
-         */
-        label: string; 
-        /**
-         * Option Value
-         */
-        value: string
-     }[];
-    /**
-     *  data of the objects related to the options
-     */
-    search_results?: OptionSelectorType[];
+	/**
+	 * options to show in the select of solar objects
+	 */
+	options?: {
+		/**
+		 * Option Label
+		 */
+		label: string;
+		/**
+		 * Option Value
+		 */
+		value: string;
+	}[];
+	/**
+	 *  data of the objects related to the options
+	 */
+	search_results?: OptionSelectorType[];
 	/**
 	 * Solar object selected in t he selector
 	 */
-	selectedObject?: string
+	selectedObject?: string;
 };
 
 /**
@@ -80,30 +80,39 @@ type getSolarSystemObjectType = {
 	/**
 	 * The label for the API data point.
 	 */
-	apiLabel: string,
+	apiLabel: string;
 	/**
 	 * The value from the Solar System API data.
 	 */
-	apiValue: keyof SolarSystemApiData,
+	apiValue: keyof SolarSystemApiData;
 	/**
 	 * The unit of measurement for the value.
 	 */
-	apiUnit: string
-}
+	apiUnit: string;
+};
 
+/**
+ * All the data for the objects obtained in the search
+ */
 type BodiesType = {
-	bodies:  Array<OptionSelectorType>
-}
+	/**
+	 * Array with all the possible options
+	 */
+	bodies: Array<OptionSelectorType>;
+};
 
+/**
+ * Options in the search object selector
+ */
 type OptionSelectorType = {
-	englishName: string; 
-	id: string
-}
+	/**
+	 * Name of the object
+	 */
+	englishName: string;
+	/**
+	 * id of the object
+	 */
+	id: string;
+};
 
-export {
-	getSolarSystemObjectType,
-	SolarObjectSettings,
-	SolarSystemApiData,
-	BodiesType,
-	OptionSelectorType
-}
+export { getSolarSystemObjectType, SolarObjectSettings, SolarSystemApiData, BodiesType, OptionSelectorType };

@@ -1,17 +1,17 @@
 import streamDeck, {
 	action,
-	type DidReceiveSettingsEvent,
 	DialAction,
+	type DidReceiveSettingsEvent,
 	KeyAction,
 	KeyDownEvent,
 	SingletonAction,
-	WillAppearEvent
+	WillAppearEvent,
 } from "@elgato/streamdeck";
 
 import config from "../config/settings";
-import { getSolarSystemObject, showData } from "../utils/solar-system-utils";
-import { getSolarSystemObjectType, SolarObjectSettings} from '../utils/types'
 import { TextScroller } from "../utils/scroller";
+import { getSolarSystemObject, showData } from "../utils/solar-system-utils";
+import { getSolarSystemObjectType, SolarObjectSettings } from "../utils/types";
 
 /**
  * Stream Deck action for displaying information about Solar System Object.
@@ -24,22 +24,27 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	 */
 	protected maxWindowsSize: number;
 	/**
-	 * Scroller entity for the ObjectInfo class 
+	 * Previos Solar Object
+	 */
+	protected previousObject: string | undefined;
+	/**
+	 * Scroller entity for the ObjectInfo class
 	 */
 	protected scroller: TextScroller;
 	/**
 	 * Timeoout to show correctly data in showdata
 	 */
-	protected showDataTimer: NodeJS.Timeout | undefined
+	protected showDataTimer: NodeJS.Timeout | undefined;
 
 	/**
 	 * Constructor of the class
 	 */
 	constructor() {
-		super()
-		this.maxWindowsSize = 8
-		this.scroller = new TextScroller('', this.maxWindowsSize);
-		this.showDataTimer = undefined
+		super();
+		this.maxWindowsSize = 8;
+		this.scroller = new TextScroller("", this.maxWindowsSize);
+		this.showDataTimer = undefined;
+		this.previousObject = undefined;
 	}
 
 	/**
@@ -54,13 +59,12 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	 * Function to get the solar sytem object
 	 * @param ev The event payload for the key down event.
 	 * @param name The name of the solar object to search
-	 * @param scroller scroller entity
 	 */
 	protected async getInfoAction(ev: KeyDownEvent<SolarObjectSettings>, name: string): Promise<void> {
 		const { settings } = ev.payload;
 		settings.name = name;
 
-		const result = await getSolarSystemObject(ev.action, settings) as getSolarSystemObjectType;
+		const result = (await getSolarSystemObject(ev.action, settings)) as getSolarSystemObjectType;
 
 		if (result?.apiLabel) {
 			this.showDataTimer = showData(result.apiLabel, result.apiValue, result.apiUnit, ev.action, this.scroller);
@@ -70,8 +74,8 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	/**
 	 * Function to clear timeout created on showData
 	 */
-	protected resetShowData():void {
-		this.scroller.stopScroll()
+	protected resetShowData(): void {
+		this.scroller.stopScroll();
 		if (this.showDataTimer) {
 			clearTimeout(this.showDataTimer);
 		}
@@ -83,18 +87,19 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	protected sentChecklistSettings(): void {
 		streamDeck.ui.current?.sendToPropertyInspector({
 			event: "getSettings",
-			items: config.settings.filter(setting => !setting.avoid),
+			items: config.settings.filter((setting) => !setting.avoid),
 		});
 	}
 
 	/**
 	 * Function to sent the icon option via property inspector to UI.
 	 * @param name name of the space object
+	 * @param bodyType Solar system body type
 	 */
-	protected sentIconSettings(name: string): void {
+	protected sentIconSettings(name: string, bodyType: string | undefined = undefined): void {
 		streamDeck.ui.current?.sendToPropertyInspector({
 			event: "getIconSettings",
-			items: config.getIconSettings(name),
+			items: config.getIconSettings(name, bodyType),
 		});
 	}
 
@@ -112,18 +117,19 @@ export class ObjectInfo extends SingletonAction<SolarObjectSettings> {
 	/**
 	 * Function to sent all the setings to the plugin
 	 * @param name Name of the object we want its settings
+	 * @param bodyType Solar system body type
 	 */
-	protected setObjectPluginInfo(name: string): void {
+	protected setObjectPluginInfo(name: string, bodyType: string | undefined = undefined): void {
 		this.sentChecklistSettings();
-		this.sentIconSettings(name);
+		this.sentIconSettings(name, bodyType);
 	}
- 
+
 	/**
 	 * Checks and update the image of the key according the iconSettings
 	 *  @param action - The Stream Deck key action instance.
 	 * @param name - The name of the object
 	 */
-	protected async updateIconSetting(action: DialAction | KeyAction, name: string): Promise<void> {		
+	protected async updateIconSetting(action: DialAction | KeyAction, name: string): Promise<void> {
 		action.setImage(name);
 	}
 }

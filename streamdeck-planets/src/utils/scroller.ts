@@ -36,13 +36,13 @@ export class TextScroller {
 	 * @param speedMs speed of the scroll in ms
 	 * @param action streamdeck Keyaction
 	 */
-	public startScroll(speedMs: number = 200, action: DialAction| KeyAction): void {        
+	public startScroll(speedMs: number = 200, action: DialAction | KeyAction): void {
 		if (this.text.length <= this.windowSize) {
-			action.setTitle(this.text)
+			action.setTitle(this.text);
 		} else {
 			this.intervalId = setInterval(() => {
 				const visibleText = this.getVisibleText();
-				action.setTitle(visibleText); 
+				action.setTitle(visibleText);
 				this.position = (this.position + 1) % this.text.length;
 			}, speedMs);
 		}
@@ -55,7 +55,7 @@ export class TextScroller {
 		if (this.intervalId) {
 			clearInterval(this.intervalId);
 		}
-		this.position = 0
+		this.position = 0;
 	}
 
 	/**
