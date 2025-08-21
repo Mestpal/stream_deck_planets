@@ -32,11 +32,9 @@ const getIconSettings = (name: string, bodyType: string | undefined = undefined)
 	} else if (bodyType) {
 		iconOptions = [
 			{ label: "Drawn", value: `imgs/actions/types/${bodyType}1` },
-			{ label: "Planet", value: `imgs/actions/types/Asteroid1` },
+			{ label: "Planet", value: `imgs/actions/types/${bodyType}R` },
 		];
 	}
-
-	console.log("ICONS", iconOptions);
 
 	return iconOptions;
 };
