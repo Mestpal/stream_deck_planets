@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "@elgato/eslint-config": "^0.1.0",
+    "@elgato/prettier-config": "^0.2.6"
+  }
+}

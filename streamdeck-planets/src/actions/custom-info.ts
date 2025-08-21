@@ -66,7 +66,7 @@ export class CustomInfo extends ObjectInfo {
 		if (settings.iconSettings) {
 			this.updateIconSetting(ev.action, settings.iconSettings as string);
 		}
-		
+
 		await ev.action.setSettings(settings);
 	}
 
