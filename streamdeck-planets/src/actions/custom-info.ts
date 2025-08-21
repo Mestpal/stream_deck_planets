@@ -100,6 +100,7 @@ export class CustomInfo extends ObjectInfo {
 	 */
 	public override onWillAppear(ev: WillAppearEvent<SolarObjectSettings>): void {
 		if (ev.payload.settings.selectedObject) {
+			this.resetShowData();
 			const objectName = ev.payload.settings.selectedObject as string;
 			this.setDefaultSettings(ev, objectName);
 			this.scroller.text = objectName;
