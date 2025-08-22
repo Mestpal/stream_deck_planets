@@ -2,7 +2,6 @@
     "Name": "StreamDeck Planets",
     "Version": "0.1.0.0",
     "Author": "Manuel Estévez Palencia",
-    "PropertyInspectorPath": "./ui/property-selector.html",
     "Actions": [
         {
             "Name": "Search space object",
@@ -25,7 +24,7 @@
             "UUID": "com.manuel-estvez-palencia.streamdeck-planets.mercury",
             "Icon": "imgs/icons/Mercury",
             "Tooltip": "Displays Mercury information",
-            "PropertyInspectorPath": "ui/mercury-info.html",
+            "PropertyInspectorPath": "ui/property-selector.html",
             "Controllers": [
                 "Keypad"
             ],
@@ -41,7 +40,7 @@
             "UUID": "com.manuel-estvez-palencia.streamdeck-planets.venus",
             "Icon": "imgs/icons/Venus",
             "Tooltip": "Displays Venus information",
-            "PropertyInspectorPath": "ui/venus-info.html",
+            "PropertyInspectorPath": "ui/property-selector.html",
             "Controllers": [
                 "Keypad"
             ],
@@ -57,7 +56,7 @@
             "UUID": "com.manuel-estvez-palencia.streamdeck-planets.earth",
             "Icon": "imgs/icons/Earth",
             "Tooltip": "Displays Earth information",
-            "PropertyInspectorPath": "ui/earth-info.html",
+            "PropertyInspectorPath": "ui/property-selector.html",
             "Controllers": [
                 "Keypad"
             ],
@@ -73,7 +72,7 @@
             "UUID": "com.manuel-estvez-palencia.streamdeck-planets.mars",
             "Icon": "imgs/icons/Mars",
             "Tooltip": "Displays Mars information",
-            "PropertyInspectorPath": "ui/mars-info.html",
+            "PropertyInspectorPath": "ui/property-selector.html",
             "Controllers": [
                 "Keypad"
             ],
@@ -89,7 +88,7 @@
             "UUID": "com.manuel-estvez-palencia.streamdeck-planets.jupiter",
             "Icon": "imgs/icons/Jupiter",
             "Tooltip": "Displays Jupiter information",
-            "PropertyInspectorPath": "ui/jupiter-info.html",
+            "PropertyInspectorPath": "ui/property-selector.html",
             "Controllers": [
                 "Keypad"
             ],
@@ -105,7 +104,7 @@
             "UUID": "com.manuel-estvez-palencia.streamdeck-planets.saturn",
             "Icon": "imgs/icons/Saturn",
             "Tooltip": "Displays Saturn information",
-            "PropertyInspectorPath": "ui/saturn-info.html",
+            "PropertyInspectorPath": "ui/property-selector.html",
             "Controllers": [
                 "Keypad"
             ],
@@ -121,7 +120,7 @@
             "UUID": "com.manuel-estvez-palencia.streamdeck-planets.uranus",
             "Icon": "imgs/icons/Uranus",
             "Tooltip": "Displays Uranus information",
-            "PropertyInspectorPath": "ui/uranus-info.html",
+            "PropertyInspectorPath": "ui/property-selector.html",
             "Controllers": [
                 "Keypad"
             ],
@@ -137,7 +136,7 @@
             "UUID": "com.manuel-estvez-palencia.streamdeck-planets.neptune",
             "Icon": "imgs/icons/Neptune",
             "Tooltip": "Displays Uranus information",
-            "PropertyInspectorPath": "ui/uranus-info.html",
+            "PropertyInspectorPath": "ui/property-selector.html",
             "Controllers": [
                 "Keypad"
             ],
@@ -150,10 +149,10 @@
         }
     ],
     "Category": "StreamDeck Planets",
-    "CategoryIcon": "imgs/plugin/category-icon",
+    "CategoryIcon": "imgs/icons/Custom",
     "CodePath": "bin/plugin.js",
     "Description": "A small plugin to get the info of the planets in your stream deck!",
-    "Icon": "imgs/plugin/marketplace",
+    "Icon": "imgs/icons/Custom",
     "SDKVersion": 2,
     "Software": {
         "MinimumVersion": "6.5"
